@@ -1,14 +1,12 @@
 import { useEffect } from "react";
 import { db, storage } from "../firebase/firebase.config.js";
-import { Button } from "@mui/material";
 import { useAuth } from "../contexts/AuthContext.jsx";
 import { useDispatch, useSelector } from "react-redux";
+import { collection, getDocs } from "firebase/firestore";
+import { getDownloadURL, ref } from "firebase/storage";
+import { setPhotos } from "../Redux/photos.store.js";
 
-import { collection, getDocs, deleteDoc, doc } from "firebase/firestore";
-
-import { getDownloadURL, ref, deleteObject } from "firebase/storage";
-
-import { deletePhoto, setPhotos } from "../Redux/photos.store.js";
+import Photo from "./Photo.jsx";
 
 function Photos() {
   let photos = useSelector((state) => state.photos);
@@ -54,27 +52,7 @@ function Photos() {
       });
   }
 
-  const handleDelete = async (path, docId) => {
-    try {
-      let dltref = ref(storage, path);
-      await deleteObject(dltref);
-    } catch (error) {
-      console.error(
-        "Couldn't delete the referenced item from storage:",
-        error.message
-      );
-    }
-    let photoDoc = doc(db, `Users/${currentUser.uid}/Photos`, docId);
-    try {
-      await deleteDoc(photoDoc);
-    } catch (error) {
-      console.error(
-        "Couldn't delete the document from collection:",
-        error.message
-      );
-    }
-    dispatch(deletePhoto(docId));
-  };
+
 
   return (
     <div
@@ -86,19 +64,8 @@ function Photos() {
     >
       <div className="photo-grid d-flex flex-row flex-wrap">
         {photos?.map((photo) => (
-          <div className="photo-container d-flex flex-column" key={photo.id}>
-            <img
-              src={photo.url}
-              style={{ height: "200px", margin: "5px" }}
-              alt="google photo"
-            />
-            <Button
-              variant="outlined"
-              onClick={() => handleDelete(photo.path, photo.id)}
-            >
-              Delete
-            </Button>
-          </div>
+      
+      <Photo key={photo.id} photo={photo} />
         ))}
       </div>
     </div>
