@@ -1,0 +1,99 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.root {
+  min-height: 100vh;
+  min-width: 100vw;
+}
+
+#sign-up-container,
+#sign-in-container {
+  border: 1px solid gray;
+  border-radius: 28px;
+  padding: 10px;
+  max-width: 400px;
+  margin: auto;
+}
+
+#sign-up-container form,
+#sign-in-container form {
+  width: 90%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* NavBar */
+.hover-pointer:hover {
+  cursor: pointer;
+  transform: scale(1.2);
+}
+
+.hover-pointer.fa-gear {
+  transition: all 0.2s;
+}
+.hover-pointer.fa-gear:hover {
+  transform: scale(1.2) rotate(90deg);
+}
+
+/* Aside */
+
+.aside {
+  width: 260px;
+  font-size: 14px;
+  /* color: rgb(95,99,104) !important; */
+}
+
+.aside i {
+  font-size: 18px;
+}
+
+.aside ul {
+  list-style: none;
+}
+
+.aside li {
+  max-width: 230px;
+  padding: 9px 12px 9px 24px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  border-top-right-radius: 18px;
+  border-bottom-right-radius: 18px;
+}
+
+.aside li i {
+  width: 10%;
+}
+.aside li span {
+  width: 90%;
+}
+
+.aside li:hover {
+  background-color: rgb(241,243,244);
+}
+li.active-aside-tab:hover {
+  background-color: rgb(232,240,254);
+}
+
+.aside a{
+  text-decoration: none;
+  color: rgb(95,99,104) !important;
+  width: 100%;
+}
+.aside a span{
+  color: #3c4043;
+  font-weight: 500;
+}
+
+.active-aside-tab{
+  background-color: rgb(232,240,254) !important;
+}
+.active-aside-tab a, .active-aside-tab a span{
+  color: rgb(26,115,232) !important;
+}
