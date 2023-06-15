@@ -1,11 +1,18 @@
+import { Link } from "react-router-dom";
+import { useState } from "react";
+
 import Container from "react-bootstrap/Container";
 import Form from "react-bootstrap/Form";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
-import { Link } from "react-router-dom";
+import ProfileCard from "./ProfileCard";
 
 function NavBar() {
+  const [showProfile, setShowProfile] = useState(false);
+
   return (
+    <>
+    {showProfile && <ProfileCard />}
     <Navbar
       bg="white"
       expand="lg"
@@ -62,7 +69,11 @@ function NavBar() {
 
             <i className="fa-solid fa-gear hover-pointer"></i>
 
-            <div className="profile hover-pointer" style={{ width: "50px" }}>
+            <div 
+              className="profile hover-pointer" 
+              style={{ width: "50px" }}
+              onClick={()=>{setShowProfile(!showProfile)}}
+              >
               <img
                 src="https://media.licdn.com/dms/image/C5603AQFniDLv2JCakw/profile-displayphoto-shrink_200_200/0/1639730969038?e=1692230400&v=beta&t=ASCa0waPnzbJ9o8LW93Uj9oPepsuBNkgOkTvkYurrpg"
                 alt="profile"
@@ -73,6 +84,7 @@ function NavBar() {
         </Navbar.Collapse>
       </Container>
     </Navbar>
+    </>
   );
 }
 

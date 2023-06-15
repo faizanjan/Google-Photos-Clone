@@ -40,10 +40,14 @@
   transform: scale(1.2) rotate(90deg);
 }
 
+.profile-container{
+ z-index: 100;
+}
+
 /* Aside */
 
 .aside {
-  width: 260px;
+  min-width: 260px;
   font-size: 14px;
   /* color: rgb(95,99,104) !important; */
 }
