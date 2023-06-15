@@ -28,14 +28,14 @@
 }
 
 /* NavBar */
-.hover-pointer:hover {
-  cursor: pointer;
-  transform: scale(1.2);
-}
-
-.hover-pointer.fa-gear {
+.hover-pointer{
   transition: all 0.2s;
 }
+.hover-pointer:hover {
+  cursor: pointer;
+  /* transform: scale(1.1); */
+}
+
 .hover-pointer.fa-gear:hover {
   transform: scale(1.2) rotate(90deg);
 }
@@ -100,4 +100,14 @@ li.active-aside-tab:hover {
 }
 .active-aside-tab a, .active-aside-tab a span{
   color: rgb(26,115,232) !important;
+}
+
+/* photos */
+
+.photos-container{
+  height:calc(100vh - 64px);
+}
+
+::-webkit-scrollbar{
+  display: none;
 }
