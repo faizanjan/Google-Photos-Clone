@@ -12,7 +12,7 @@ const Photo = ({ photo }) => {
   let { currentUser } = useAuth();
   let dispatch = useDispatch();
 
-  let setShowCarousel = useContext(CarouselContext);
+  let {setShowCarousel, setActiveIndex} = useContext(CarouselContext);
 
   const handleDelete = async (path, docId) => {
     try {
@@ -44,6 +44,7 @@ const Photo = ({ photo }) => {
       onMouseOut={() => setShowDelete(false)}
       onClick={() => {
         setShowCarousel(true);
+        setActiveIndex(photo.index)
       }}
     >
       <img src={photo.url} style={{ height: "250px" }} alt="google photo" />

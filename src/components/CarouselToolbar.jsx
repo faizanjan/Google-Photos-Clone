@@ -2,7 +2,7 @@ import { useContext } from "react";
 import { CarouselContext } from "./Photos.jsx";
 
 const CarouselToolbar = () => {
-  let setShowCarousel = useContext(CarouselContext);
+  let {setShowCarousel} = useContext(CarouselContext);
 
   return (
     <div className="carousel-toolbar bg-dark py-4 d-flex flex-row justify-content-between align-items-center">

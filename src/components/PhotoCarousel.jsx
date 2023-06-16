@@ -3,15 +3,14 @@ import { useState } from "react";
 import Carousel from "react-bootstrap/Carousel";
 import CarouselToolbar from "./CarouselToolbar";
 
-function PhotoCarousel({ photos }) {
-  const [index, setIndex] = useState(0);
+function PhotoCarousel({ photos, activeIndex, setActiveIndex }) {
 
   let carouselPhotos = Object.values(photos)
     .map((monthPhotos) => monthPhotos.map((photo) => photo))
     .flat();
 
   const handleSelect = (selectedIndex) => {
-    setIndex(selectedIndex);
+    setActiveIndex(selectedIndex);
   };
 
   return (
@@ -26,7 +25,7 @@ function PhotoCarousel({ photos }) {
     >
       <CarouselToolbar />
 
-      <Carousel activeIndex={index} onSelect={handleSelect} className="bg-dark">
+      <Carousel activeIndex={activeIndex} onSelect={handleSelect} className="bg-dark">
         {carouselPhotos.map((photo) => {
           return (
             <Carousel.Item key={photo.id}>

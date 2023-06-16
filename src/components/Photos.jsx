@@ -12,23 +12,26 @@ import PhotoCarousel from "./PhotoCarousel.jsx";
 export let CarouselContext = createContext();
 
 function Photos() {
-  let [showCarousel, setShowCarousel] = useState(false);
+  const [showCarousel, setShowCarousel] = useState(false);
+  const [activeIndex, setActiveIndex] = useState(0);
 
   let photos = useSelector((state) => {
-    return [...state.photos].sort((a, b) =>
-      b?.timeCreated.localeCompare(a?.timeCreated)
-    );
+    return state.photos;
+    // return [...state.photos].sort((a, b) =>
+    //   b?.timeCreated.localeCompare(a?.timeCreated)
+    // );
   })
     .map((photo) => {
       return { ...photo, timeCreated: new Date(photo.timeCreated) };
     })
-    .reduce((acc, photo, _, arr) => {
+    .reduce((acc, photo) => {
       let key =
         photo.timeCreated.getMonth() + "/" + photo.timeCreated.getFullYear();
       if (acc[key]) acc[key].push(photo);
       else acc[key] = [photo];
       return acc;
     }, {});
+
 
   let { currentUser } = useAuth();
   let dispatch = useDispatch();
@@ -61,12 +64,15 @@ function Photos() {
         ...tempPhotosState,
         { id: obj.id, path: obj.path, timeCreated, url },
       ];
-      dispatch(setPhotos(tempPhotosState));
+      tempPhotosState.sort((a, b) =>
+        b?.timeCreated.localeCompare(a?.timeCreated)
+      );
+      dispatch(setPhotos(tempPhotosState.map((photoObj, index)=>({...photoObj, index}))));
     });
   }
 
   return (
-    <CarouselContext.Provider value={setShowCarousel}>
+    <CarouselContext.Provider value={{ setShowCarousel, setActiveIndex }}>
       <div
         className="photos-container ms-2"
         style={{
@@ -75,13 +81,13 @@ function Photos() {
         }}
       >
         <div className="month-grid">
-          {Object.keys(photos).map((month) => {
+          {Object.keys(photos).map((month, index) => {
             return <MonthGrid key={month} monthPhotos={photos[month]} />;
           })}
         </div>
 
         {showCarousel && (
-          <PhotoCarousel photos={photos} setShowCarousel={setShowCarousel} />
+          <PhotoCarousel photos={photos} activeIndex={activeIndex} setActiveIndex={setActiveIndex} />
         )}
       </div>
     </CarouselContext.Provider>
