@@ -9,25 +9,24 @@ import { setPhotos } from "../Redux/photos.store.js";
 import MonthGrid from "./MonthGrid.jsx";
 
 function Photos() {
-  let photos = useSelector((state) =>
-    [...state.photos].sort((a, b) =>
+  let photos = useSelector((state) => {
+    return [...state.photos].sort((a, b) =>
       b?.timeCreated.localeCompare(a?.timeCreated)
-    )
-  )
+    );
+  })
     .map((photo) => {
       return { ...photo, timeCreated: new Date(photo.timeCreated) };
     })
-    .reduce((acc,photo) => {
-      let key = photo.timeCreated.getMonth() +'/'+ photo.timeCreated.getFullYear()
-      if (acc[key])
-        acc[key].push(photo);
+    .reduce((acc, photo, _, arr) => {
+      let key =
+        photo.timeCreated.getMonth() + "/" + photo.timeCreated.getFullYear();
+      if (acc[key]) acc[key].push(photo);
       else acc[key] = [photo];
       return acc;
     }, {});
 
   let { currentUser } = useAuth();
   let dispatch = useDispatch();
-
 
   const usersCollection = collection(db, "Users");
   const photosCollection = collection(
@@ -49,24 +48,16 @@ function Photos() {
 
     let tempPhotosState = [];
 
-    let downloadPromises = photoObjs.map(async (obj) => {
+    photoObjs.forEach(async (obj) => {
       let photoRef = ref(storage, obj.path);
       let { timeCreated } = await getMetadata(photoRef);
-      tempPhotosState.push({ id: obj.id, path: obj.path, timeCreated });
-      return getDownloadURL(photoRef);
+      let url = await getDownloadURL(photoRef);
+      tempPhotosState = [
+        ...tempPhotosState,
+        { id: obj.id, path: obj.path, timeCreated, url },
+      ];
+      dispatch(setPhotos(tempPhotosState));
     });
-
-    Promise.all(downloadPromises)
-      .then((results) => {
-        let finalState = results.map((url, index) => ({
-          ...tempPhotosState[index],
-          url,
-        }));
-        dispatch(setPhotos(finalState));
-      })
-      .catch((error) => {
-        console.error("Error retrieving photo URLs:", error);
-      });
   }
 
   return (
@@ -78,9 +69,9 @@ function Photos() {
       }}
     >
       <div className="month-grid">
-        {
-          Object.keys(photos).map((month, index)=><MonthGrid key={month+index} monthPhotos={photos[month]}/>)
-        }
+        {Object.keys(photos).map((month) => {
+          return <MonthGrid key={month} monthPhotos={photos[month]} />;
+        })}
       </div>
     </div>
   );

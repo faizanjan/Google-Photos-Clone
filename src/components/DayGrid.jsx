@@ -5,6 +5,7 @@ const DayGrid = ({ photos }) => {
   let { monthName, dayOfWeek, dayOfMonth } = getDayMonthYear(
     photos[0].timeCreated
   );
+
   return (
     <div className="time-line mt-4">
       <div className="d-flex flex-column flex-wrap">
@@ -12,10 +13,10 @@ const DayGrid = ({ photos }) => {
           {dayOfWeek + ", " + dayOfMonth + " " + monthName}
         </p>
         <div className="d-flex flex-row flex-wrap">
-        {photos?.map((photo) => (
+          {photos?.map((photo) => (
             <Photo className="" key={photo.id} photo={photo} />
-            ))}
-            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
