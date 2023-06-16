@@ -5,14 +5,12 @@ import { ref, deleteObject } from "firebase/storage";
 import { useAuth } from "../contexts/AuthContext.jsx";
 import { deletePhoto } from "../Redux/photos.store.js";
 import { useDispatch } from "react-redux";
-import getDayMonthYear from "../modules/calendar.js";
 
 const Photo = ({ photo }) => {
   let [showDelete, setShowDelete] = useState(false);
   let { currentUser } = useAuth();
   let dispatch = useDispatch();
   
-  let {dayOfMonth, dayOfWeek, monthName} = getDayMonthYear(photo.timeCreated);
   
   const handleDelete = async (path, docId) => {
     try {
@@ -43,9 +41,7 @@ const Photo = ({ photo }) => {
       onMouseOver={() => setShowDelete(true)}
       onMouseOut={() => setShowDelete(false)}
     >
-      <p className="align-self-start">
-        {dayOfWeek+', '+dayOfMonth+' '+monthName}
-      </p>
+      
       <img src={photo.url} style={{ height: "250px" }} alt="google photo" />
       {showDelete && (
         <i
@@ -53,8 +49,8 @@ const Photo = ({ photo }) => {
           onClick={() => handleDelete(photo.path, photo.id)}
           style={{
             position: "absolute",
-            left: "5px",
-            top: "45px",
+            left: "15px",
+            top: "15px",
             color: "white",
           }}
         ></i>

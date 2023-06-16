@@ -44,10 +44,12 @@ function NavBar() {
           let res = await addDoc(photosCollection, { path });
           let newPhotoRef = ref(storage, path);
           let url = await getDownloadURL(newPhotoRef);
+
           let newPhoto = {
             id: res.id,
             path,
             url,
+            timeCreated: (snapshot.metadata.timeCreated)
           };
           dispatch(addPhoto(newPhoto));
         } catch (error) {

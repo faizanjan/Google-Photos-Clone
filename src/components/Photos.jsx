@@ -6,7 +6,7 @@ import { collection, getDocs } from "firebase/firestore";
 import { getDownloadURL, ref, getMetadata } from "firebase/storage";
 import { setPhotos } from "../Redux/photos.store.js";
 
-import Timeline from "./Timeline.jsx";
+import MonthGrid from "./MonthGrid.jsx";
 
 function Photos() {
   let photos = useSelector((state) =>
@@ -28,7 +28,6 @@ function Photos() {
   let { currentUser } = useAuth();
   let dispatch = useDispatch();
 
-  // console.log(photos);
 
   const usersCollection = collection(db, "Users");
   const photosCollection = collection(
@@ -72,15 +71,15 @@ function Photos() {
 
   return (
     <div
-      className="photos-container"
+      className="photos-container ms-2"
       style={{
         position: "relative",
         overflowY: "scroll",
       }}
     >
-      <div className="photo-grid">
+      <div className="month-grid">
         {
-          Object.keys(photos).map((month, index)=><Timeline key={month+index} monthPhotos={photos[month]}/>)
+          Object.keys(photos).map((month, index)=><MonthGrid key={month+index} monthPhotos={photos[month]}/>)
         }
       </div>
     </div>
