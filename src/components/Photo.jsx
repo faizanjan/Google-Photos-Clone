@@ -1,17 +1,19 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { db, storage } from "../firebase/firebase.config.js";
 import { deleteDoc, doc } from "firebase/firestore";
 import { ref, deleteObject } from "firebase/storage";
 import { useAuth } from "../contexts/AuthContext.jsx";
 import { deletePhoto } from "../Redux/photos.store.js";
 import { useDispatch } from "react-redux";
+import { CarouselContext } from "./Photos.jsx";
 
 const Photo = ({ photo }) => {
   let [showDelete, setShowDelete] = useState(false);
   let { currentUser } = useAuth();
   let dispatch = useDispatch();
-  
-  
+
+  let setShowCarousel = useContext(CarouselContext);
+
   const handleDelete = async (path, docId) => {
     try {
       let dltref = ref(storage, path);
@@ -40,8 +42,10 @@ const Photo = ({ photo }) => {
       style={{ margin: "20px 5px" }}
       onMouseOver={() => setShowDelete(true)}
       onMouseOut={() => setShowDelete(false)}
+      onClick={() => {
+        setShowCarousel(true);
+      }}
     >
-      
       <img src={photo.url} style={{ height: "250px" }} alt="google photo" />
       {showDelete && (
         <i

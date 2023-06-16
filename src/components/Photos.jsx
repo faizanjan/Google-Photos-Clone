@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { db, storage } from "../firebase/firebase.config.js";
 import { useAuth } from "../contexts/AuthContext.jsx";
 import { useDispatch, useSelector } from "react-redux";
@@ -7,8 +7,13 @@ import { getDownloadURL, ref, getMetadata } from "firebase/storage";
 import { setPhotos } from "../Redux/photos.store.js";
 
 import MonthGrid from "./MonthGrid.jsx";
+import PhotoCarousel from "./PhotoCarousel.jsx";
+
+export let CarouselContext = createContext();
 
 function Photos() {
+  let [showCarousel, setShowCarousel] = useState(false);
+
   let photos = useSelector((state) => {
     return [...state.photos].sort((a, b) =>
       b?.timeCreated.localeCompare(a?.timeCreated)
@@ -61,19 +66,25 @@ function Photos() {
   }
 
   return (
-    <div
-      className="photos-container ms-2"
-      style={{
-        position: "relative",
-        overflowY: "scroll",
-      }}
-    >
-      <div className="month-grid">
-        {Object.keys(photos).map((month) => {
-          return <MonthGrid key={month} monthPhotos={photos[month]} />;
-        })}
+    <CarouselContext.Provider value={setShowCarousel}>
+      <div
+        className="photos-container ms-2"
+        style={{
+          position: "relative",
+          overflowY: "scroll",
+        }}
+      >
+        <div className="month-grid">
+          {Object.keys(photos).map((month) => {
+            return <MonthGrid key={month} monthPhotos={photos[month]} />;
+          })}
+        </div>
+
+        {showCarousel && (
+          <PhotoCarousel photos={photos} setShowCarousel={setShowCarousel} />
+        )}
       </div>
-    </div>
+    </CarouselContext.Provider>
   );
 }
 
