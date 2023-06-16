@@ -1,5 +1,6 @@
 import { useRef, useState } from "react";
 import { useAuth } from "../../contexts/AuthContext";
+import { Link, useNavigate } from "react-router-dom";
 
 import { Box, TextField, Alert, Button } from "@mui/material";
 
@@ -9,7 +10,8 @@ function SignIn() {
   const emailRef = useRef();
   const passwordRef = useRef();
 
-  const {signIn} = useAuth();
+  const { signIn } = useAuth();
+  const navigate = useNavigate();
 
   const handleSignIn = (e) => {
     e.preventDefault();
@@ -17,6 +19,7 @@ function SignIn() {
     signIn(emailRef.current.value, passwordRef.current.value)
       .then(() => {
         setError("");
+        navigate("/home");
       })
       .catch((error) => {
         setError("Failed to sign in: \n" + error.message);
@@ -24,14 +27,26 @@ function SignIn() {
   };
 
   return (
-    <div id="sign-in-container">
+    <div
+      id="sign-in-container"
+      className="shadow border p-5 d-flex flex-column align-items-center"
+    >
       {error && <Alert severity="error">{error}</Alert>}
+      <div className="ms-2 my-3 d-flex flex-row align-items-center">
+        <img
+          src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Google_2015_logo.svg/2560px-Google_2015_logo.svg.png"
+          alt="logo"
+          style={{ height: "35px" }}
+          className="img img-fluid"
+        />
+        <h5 className="ms-1 mb-0 text-muted fw-normal">Photos</h5>
+      </div>
       <Box
+        className="my-4 px-5"
         component="form"
         sx={{
-          "& > :not(style)": { m: 1, width: "25ch" },
+          "& > :not(style)": { m: 1, width: "35ch" },
         }}
-        // noValidate
         autoComplete="on"
         onSubmit={handleSignIn}
       >
@@ -51,10 +66,17 @@ function SignIn() {
           inputRef={passwordRef}
           required
         />
+
         <Button type="submit" variant="outlined">
           SIGN IN
         </Button>
       </Box>
+      <span className="text-muted">
+        Need an account?
+        <Link to="/signup" className="ms-3">
+          Sign Up
+        </Link>
+      </span>
     </div>
   );
 }

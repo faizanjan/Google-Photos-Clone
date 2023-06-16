@@ -27,6 +27,9 @@
   justify-content: center;
 }
 
+a{
+  text-decoration: none;
+}
 /* NavBar */
 .hover-pointer{
   transition: all 0.2s;

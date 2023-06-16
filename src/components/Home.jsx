@@ -12,7 +12,7 @@ const Home = () => {
       <div className="d-flex flex-row">
         <Aside />
         <Routes>
-          <Route path="/" element={<Photos />} />
+          <Route path="/home" element={<Photos />} />
           <Route path="/bin" element={<Bin />} />
         </Routes>
       </div>

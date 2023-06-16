@@ -7,6 +7,7 @@ import {
   updateProfile,
   signOut,
 } from "firebase/auth";
+import { useNavigate } from "react-router-dom";
 
 import Backdrop from "../components/secondary_components/Backdrop";
 
@@ -16,6 +17,7 @@ export const useAuth = () => useContext(AuthContext);
 const AuthProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
@@ -44,6 +46,7 @@ const AuthProvider = ({ children }) => {
     try {
       await signOut(auth);
       setCurrentUser(null);
+      navigate('/signin')
     } catch (error) {
       console.error("Logout error:", error);
     }
