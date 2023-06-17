@@ -86,7 +86,7 @@ function Photos() {
         }}
       >
         <div className="month-grid">
-          {Object.keys(photos).map((month, index) => {
+          {Object.keys(photos).map((month) => {
             return <MonthGrid key={month} monthPhotos={photos[month]} />;
           })}
         </div>

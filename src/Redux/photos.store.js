@@ -8,8 +8,15 @@ let photoSlice = createSlice({
       return action.payload;
     },
     addPhoto: (state, action) => {
-      state.unshift(action.payload);
+      const newPhoto = { ...action.payload, index: -1 };
+      const updatedState = [newPhoto, ...state];
+    
+      return updatedState.map((photo) => ({
+        ...photo,
+        index: photo.index + 1,
+      }));
     },
+    
     deletePhoto: (state, action) => {
       const updatedPhotos = state.map((photo, index) => {
         if (photo.id === action.payload) {

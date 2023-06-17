@@ -97,7 +97,7 @@ function NavBar() {
           };
           dispatch(addPhoto(newPhoto));
         } catch (error) {
-          console.error(err.message);
+          console.error(error.message);
         }
       });
     }

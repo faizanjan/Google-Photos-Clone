@@ -1,5 +1,3 @@
-import { useState } from "react";
-
 import Carousel from "react-bootstrap/Carousel";
 import CarouselToolbar from "./CarouselToolbar";
 
@@ -23,7 +21,7 @@ function PhotoCarousel({ photos, activeIndex, setActiveIndex }) {
         right: 0,
       }}
     >
-      <CarouselToolbar />
+      <CarouselToolbar photoIndex={activeIndex}/>
 
       <Carousel activeIndex={activeIndex} onSelect={handleSelect} className="bg-dark">
         {carouselPhotos.map((photo) => {
