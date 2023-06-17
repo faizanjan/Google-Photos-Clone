@@ -11,8 +11,13 @@ let photoSlice = createSlice({
       state.unshift(action.payload);
     },
     deletePhoto: (state, action) => {
-      state = state.filter((photo) => photo.id !== action.payload);
-      return state;
+      const updatedPhotos = state.map((photo, index) => {
+        if (photo.id === action.payload) {
+          return null;
+        }
+        return { ...photo, index: index - (index > photo.index ? 1 : 0) };
+      }).filter(Boolean);
+      return updatedPhotos;
     },
   },
 });

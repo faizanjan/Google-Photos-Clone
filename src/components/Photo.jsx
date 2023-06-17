@@ -14,7 +14,8 @@ const Photo = ({ photo }) => {
 
   let {setShowCarousel, setActiveIndex} = useContext(CarouselContext);
 
-  const handleDelete = async (path, docId) => {
+  const handleDelete = async (event, path, docId) => {
+    event.stopPropagation()
     try {
       let dltref = ref(storage, path);
       await deleteObject(dltref);
@@ -51,7 +52,7 @@ const Photo = ({ photo }) => {
       {showDelete && (
         <i
           className="fa-solid fa-trash-can me-4 shadow-lg"
-          onClick={() => handleDelete(photo.path, photo.id)}
+          onClick={(e) => handleDelete(e,photo.path, photo.id)}
           style={{
             position: "absolute",
             left: "15px",

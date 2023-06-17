@@ -30,6 +30,7 @@ function Photos() {
 
   let { currentUser } = useAuth();
   let dispatch = useDispatch();
+
   useEffect(() => {
     if (currentUser) getPhotoUrls();
   }, [currentUser]);
@@ -43,33 +44,37 @@ function Photos() {
     "Photos"
   );
 
-  async function getPhotoUrls() {
+   async function getPhotoUrls() {
     let photoDocs = await getDocs(photosCollection);
     let photoObjs = photoDocs.docs.map((doc) => ({
       ...doc.data(),
       id: doc.id,
     }));
-
+  
     let tempPhotosState = [];
-
-    photoObjs.forEach(async (obj) => {
-      let photoRef = ref(storage, obj.path);
-      let { timeCreated } = await getMetadata(photoRef);
-      let url = await getDownloadURL(photoRef);
-      tempPhotosState = [
-        ...tempPhotosState,
-        { id: obj.id, path: obj.path, timeCreated, url },
-      ];
-      tempPhotosState.sort((a, b) =>
-        b?.timeCreated.localeCompare(a?.timeCreated)
-      );
-      dispatch(
-        setPhotos(
-          tempPhotosState.map((photoObj, index) => ({ ...photoObj, index }))
-        )
-      );
-    });
+  
+    await Promise.all(
+      photoObjs.map(async (obj) => {
+        let photoRef = ref(storage, obj.path);
+        let { timeCreated } = await getMetadata(photoRef);
+        let url = await getDownloadURL(photoRef);
+        tempPhotosState = [
+          ...tempPhotosState,
+          { id: obj.id, path: obj.path, timeCreated, url },
+        ];
+        tempPhotosState.sort((a, b) =>
+          b?.timeCreated.localeCompare(a?.timeCreated)
+        );
+        tempPhotosState = tempPhotosState.map((photoObj, index) => ({
+          ...photoObj,
+          index,
+        }));
+      })
+    );
+  
+    dispatch(setPhotos(tempPhotosState));
   }
+  
 
   return (
     <CarouselContext.Provider value={{ setShowCarousel, setActiveIndex }}>
