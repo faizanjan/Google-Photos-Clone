@@ -24,16 +24,26 @@ let photoSlice = createSlice({
       return updatedPhotos;
     },
     toggleFav: (state, action)=>{
-      const toggledPhotos = state.map(photo=>{
+      const updatedPhotos = state.map(photo=>{
         if(photo.id!==action.payload) return photo;
         else return {
           ...photo,
           isFavourite: !photo.isFavourite
         }
       })
-      return toggledPhotos;
+      return updatedPhotos;
+    },
+    moveToBin: (state, action)=>{
+      const updatedPhotos = state.map(photo=>{
+        if(photo.id!==action.payload) return photo;
+        else return {
+          ...photo,
+          isDeleted: !photo.isDeleted
+        }
+      })
+      return updatedPhotos;
     }
   },
 });
-export const { setPhotos, addPhoto, deletePhoto, toggleFav } = photoSlice.actions;
+export const { setPhotos, addPhoto, deletePhoto, toggleFav, moveToBin } = photoSlice.actions;
 export default photoSlice.reducer;

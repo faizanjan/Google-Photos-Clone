@@ -1,4 +1,6 @@
-import {useRef, useEffect} from 'react';
+import { useRef, useEffect } from "react";
+import { useLocation } from "react-router-dom";
+import { showPhoto } from "../modules/processPhotos";
 
 import Carousel from "react-bootstrap/Carousel";
 import CarouselToolbar from "./CarouselToolbar";
@@ -9,8 +11,8 @@ function PhotoCarousel({
   setActiveIndex,
   setShowCarousel,
 }) {
-
   const divRef = useRef(null);
+  let { pathname } = useLocation();
 
   useEffect(() => {
     divRef.current.focus();
@@ -58,22 +60,24 @@ function PhotoCarousel({
         onSelect={handleSelect}
         className="bg-dark"
       >
-        {carouselPhotos.map((photo) => {
-          return (
-            <Carousel.Item key={photo.id}>
-              <img
-                className="d-block w-100"
-                src={photo.url}
-                alt={photo.id}
-                style={{
-                  height: "calc(100vh - 75px)",
-                  width: "auto",
-                  objectFit: "contain",
-                }}
-              />
-            </Carousel.Item>
-          );
-        })}
+        {carouselPhotos
+          .filter((photo) => showPhoto(pathname,photo))
+          .map((photo) => {
+            return (
+              <Carousel.Item key={photo.id}>
+                <img
+                  className="d-block w-100"
+                  src={photo.url}
+                  alt={photo.id}
+                  style={{
+                    height: "calc(100vh - 75px)",
+                    width: "auto",
+                    objectFit: "contain",
+                  }}
+                />
+              </Carousel.Item>
+            );
+          })}
       </Carousel>
     </div>
   );

@@ -84,7 +84,7 @@ const Home = () => {
           <Routes>
             <Route path="photos" element={<Photos photos={photos} />} />
             <Route path="favourites" element={<Favourites photos={photos} />} />
-            <Route path="bin" element={<Bin />} />
+            <Route path="bin" element={<Bin photos={photos}/>} />
           </Routes>
           {showCarousel && (
             <PhotoCarousel
