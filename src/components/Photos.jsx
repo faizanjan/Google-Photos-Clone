@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import { db, storage } from "../firebase/firebase.config.js";
 import { useAuth } from "../contexts/AuthContext.jsx";
 import { useDispatch, useSelector } from "react-redux";
@@ -8,6 +8,7 @@ import { setPhotos } from "../Redux/photos.store.js";
 
 import MonthGrid from "./MonthGrid.jsx";
 import PhotoCarousel from "./PhotoCarousel.jsx";
+import Backdrop from "./secondary_components/Backdrop.jsx";
 
 export let CarouselContext = createContext();
 
@@ -15,12 +16,7 @@ function Photos() {
   const [showCarousel, setShowCarousel] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
 
-  let photos = useSelector((state) => {
-    return state.photos;
-    // return [...state.photos].sort((a, b) =>
-    //   b?.timeCreated.localeCompare(a?.timeCreated)
-    // );
-  })
+  let photos = useSelector((state) => state.photos)
     .map((photo) => {
       return { ...photo, timeCreated: new Date(photo.timeCreated) };
     })
@@ -32,9 +28,13 @@ function Photos() {
       return acc;
     }, {});
 
-
   let { currentUser } = useAuth();
   let dispatch = useDispatch();
+  useEffect(() => {
+    if (currentUser) getPhotoUrls();
+  }, [currentUser]);
+
+  if (!currentUser) return <Backdrop />;
 
   const usersCollection = collection(db, "Users");
   const photosCollection = collection(
@@ -42,10 +42,6 @@ function Photos() {
     currentUser.uid,
     "Photos"
   );
-
-  useEffect(() => {
-    getPhotoUrls();
-  }, []);
 
   async function getPhotoUrls() {
     let photoDocs = await getDocs(photosCollection);
@@ -67,7 +63,11 @@ function Photos() {
       tempPhotosState.sort((a, b) =>
         b?.timeCreated.localeCompare(a?.timeCreated)
       );
-      dispatch(setPhotos(tempPhotosState.map((photoObj, index)=>({...photoObj, index}))));
+      dispatch(
+        setPhotos(
+          tempPhotosState.map((photoObj, index) => ({ ...photoObj, index }))
+        )
+      );
     });
   }
 
@@ -87,7 +87,11 @@ function Photos() {
         </div>
 
         {showCarousel && (
-          <PhotoCarousel photos={photos} activeIndex={activeIndex} setActiveIndex={setActiveIndex} />
+          <PhotoCarousel
+            photos={photos}
+            activeIndex={activeIndex}
+            setActiveIndex={setActiveIndex}
+          />
         )}
       </div>
     </CarouselContext.Provider>

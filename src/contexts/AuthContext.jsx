@@ -20,12 +20,20 @@ const AuthProvider = ({ children }) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    onAuthStateChanged(auth, (user) => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
         setCurrentUser(user);
+        setIsLoading(false);
+      } else {
+        setCurrentUser(null);
+        setIsLoading(false);
       }
-      setIsLoading(false);
     });
+
+    return () => {
+      unsubscribe();
+      setIsLoading(false);
+    };
   }, []);
 
   const signIn = async (email, password) => {
@@ -46,7 +54,7 @@ const AuthProvider = ({ children }) => {
     try {
       await signOut(auth);
       setCurrentUser(null);
-      navigate('/signin')
+      navigate("/signin");
     } catch (error) {
       console.error("Logout error:", error);
     }
@@ -63,9 +71,7 @@ const AuthProvider = ({ children }) => {
 
   return (
     <AuthContext.Provider value={value}>
-      {isLoading && <Backdrop />}
-      {!currentUser && !isLoading && children[0]}
-      {currentUser && !isLoading && children[1]}
+      {isLoading ? <Backdrop /> : children}
     </AuthContext.Provider>
   );
 };

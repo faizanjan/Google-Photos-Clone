@@ -12,7 +12,7 @@ const Aside = () => {
             className={activeTab === 0 ? "active-aside-tab" : ""}
             onClick={() => setActiveTab(0)}
           >
-            <Link to="/">
+            <Link to="/home/photos">
               <i className="fa-solid fa-image me-4"></i>
               <span>Photos</span>
             </Link>
@@ -83,7 +83,7 @@ const Aside = () => {
             className={activeTab === 7 ? "active-aside-tab" : ""}
             onClick={() => setActiveTab(7)}
           >
-            <Link to="/bin">
+            <Link to="/home/bin">
               <i className="fa-solid fa-trash-can me-4"></i>
               <span>Bin</span>
             </Link>

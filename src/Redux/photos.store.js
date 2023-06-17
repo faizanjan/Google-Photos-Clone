@@ -4,7 +4,7 @@ let photoSlice = createSlice({
   name: "photos",
   initialState: [],
   reducers: {
-    setPhotos: (state, action) => {
+    setPhotos: (_, action) => {
       return action.payload;
     },
     addPhoto: (state, action) => {

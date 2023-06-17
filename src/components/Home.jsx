@@ -6,17 +6,16 @@ import Photos from "./Photos";
 import Bin from "./Bin";
 const Home = () => {
   return (
-    <>
+    <div>
       <NavBar />
-
       <div className="d-flex flex-row">
         <Aside />
         <Routes>
-          <Route path="/home" element={<Photos />} />
-          <Route path="/bin" element={<Bin />} />
+          <Route path="photos" element={<Photos />} />
+          <Route path="bin" element={<Bin />} />
         </Routes>
       </div>
-    </>
+    </div>
   );
 };
 

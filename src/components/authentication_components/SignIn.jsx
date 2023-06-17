@@ -19,7 +19,7 @@ function SignIn() {
     signIn(emailRef.current.value, passwordRef.current.value)
       .then(() => {
         setError("");
-        navigate("/home");
+        navigate("/home/photos");
       })
       .catch((error) => {
         setError("Failed to sign in: \n" + error.message);

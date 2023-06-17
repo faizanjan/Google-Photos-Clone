@@ -1,12 +1,19 @@
 import { Link } from "react-router-dom";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { db, storage } from "../firebase/firebase.config.js";
-import { addDoc, collection } from "firebase/firestore";
-import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import { addDoc, getDocs, collection } from "firebase/firestore";
+import {
+  getDownloadURL,
+  ref,
+  uploadBytes,
+  getMetadata,
+} from "firebase/storage";
 import { useAuth } from "../contexts/AuthContext";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addPhoto } from "../Redux/photos.store.js";
+import { setProfilePhotos } from "../Redux/profilePhoto.store";
 
+import Backdrop from "./secondary_components/Backdrop.jsx";
 import Container from "react-bootstrap/Container";
 import Form from "react-bootstrap/Form";
 import Nav from "react-bootstrap/Nav";
@@ -16,9 +23,14 @@ import ProfileCard from "./ProfileCard";
 function NavBar() {
   const [showProfile, setShowProfile] = useState(false);
   const { currentUser } = useAuth();
-
+  const profilePhoto = useSelector((state) => state.profilePhoto);
   const dispatch = useDispatch();
+  const uploadRef = useRef();
+  useEffect(() => {
+    if (currentUser) getProfilePhoto();
+  }, [currentUser]);
 
+  if (!currentUser) return <Backdrop />;
   const usersCollection = collection(db, "Users");
   const photosCollection = collection(
     usersCollection,
@@ -26,18 +38,50 @@ function NavBar() {
     "Photos"
   );
 
-  const uploadRef = useRef();
+  const profilePhotosCollection = collection(
+    usersCollection,
+    currentUser.uid,
+    "Profile Photos"
+  );
+
+  async function getProfilePhoto() {
+    let profilePhotoDocs = await getDocs(profilePhotosCollection);
+    let profilePhotoObjs = profilePhotoDocs.docs.map((doc) => ({
+      ...doc.data(),
+      id: doc.id,
+    }));
+
+    let tempPhotosState = [];
+
+    profilePhotoObjs.forEach(async (obj) => {
+      let photoRef = ref(storage, obj.path);
+      let { timeCreated } = await getMetadata(photoRef);
+      let url = await getDownloadURL(photoRef);
+      tempPhotosState = [
+        ...tempPhotosState,
+        { id: obj.id, path: obj.path, timeCreated, url },
+      ];
+      tempPhotosState.sort((a, b) =>
+        b?.timeCreated.localeCompare(a?.timeCreated)
+      );
+      dispatch(
+        setProfilePhotos(
+          tempPhotosState.map((photoObj, index) => ({ ...photoObj, index }))
+        )
+      );
+    });
+  }
+
   const handleFileChange = async (event) => {
     event.preventDefault();
     const files = event.target.files;
     let selectedFiles = Object.values(files);
-    console.log(selectedFiles);
     if (selectedFiles?.length !== 0) {
       selectedFiles?.forEach(async (selectedFile) => {
         try {
           const storageRef = ref(
             storage,
-            `users/${currentUser?.uid}/${selectedFile.name}`
+            `users/${currentUser.uid}/${selectedFile.name}`
           );
           let snapshot = await uploadBytes(storageRef, selectedFile);
           let path = snapshot.metadata.fullPath;
@@ -49,7 +93,7 @@ function NavBar() {
             id: res.id,
             path,
             url,
-            timeCreated: (snapshot.metadata.timeCreated)
+            timeCreated: snapshot.metadata.timeCreated,
           };
           dispatch(addPhoto(newPhoto));
         } catch (error) {
@@ -134,15 +178,29 @@ function NavBar() {
 
               <div
                 className="profile hover-pointer"
-                style={{ width: "50px" }}
+                style={{
+                  width: "50px",
+                  height: "50px",
+                  borderRadius: "50%",
+                  overflow: "hidden",
+                }}
                 onClick={() => {
                   setShowProfile(!showProfile);
                 }}
               >
                 <img
-                  src="https://media.licdn.com/dms/image/C5603AQFniDLv2JCakw/profile-displayphoto-shrink_200_200/0/1639730969038?e=1692230400&v=beta&t=ASCa0waPnzbJ9o8LW93Uj9oPepsuBNkgOkTvkYurrpg"
+                  src={
+                    profilePhoto?.[0]?.url ||
+                    "https://www.dgvaishnavcollege.edu.in/dgvaishnav-c/uploads/2021/01/dummy-profile-pic.jpg"
+                  }
                   alt="profile"
                   className="profile-link-img img-fluid rounded-5"
+                  style={{
+                    objectFit: "cover",
+                    width: "100%",
+                    height: "100%",
+                    cursor: "pointer",
+                  }}
                 />
               </div>
             </Nav>
