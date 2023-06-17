@@ -44,9 +44,7 @@ const ProfileCard = () => {
       url,
       timeCreated: snapshot.metadata.timeCreated,
     };
-    console.log(newPhoto);
     dispatch(addProfilePhoto(newPhoto));
-    //
   };
 
   return (
