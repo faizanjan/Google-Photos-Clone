@@ -44,15 +44,15 @@ function Photos() {
     "Photos"
   );
 
-   async function getPhotoUrls() {
+  async function getPhotoUrls() {
     let photoDocs = await getDocs(photosCollection);
     let photoObjs = photoDocs.docs.map((doc) => ({
       ...doc.data(),
       id: doc.id,
     }));
-  
+
     let tempPhotosState = [];
-  
+
     await Promise.all(
       photoObjs.map(async (obj) => {
         let photoRef = ref(storage, obj.path);
@@ -60,7 +60,15 @@ function Photos() {
         let url = await getDownloadURL(photoRef);
         tempPhotosState = [
           ...tempPhotosState,
-          { id: obj.id, path: obj.path, timeCreated, url },
+          {
+            id: obj.id,
+            path: obj.path,
+            timeCreated,
+            url,
+            isFavourite: Boolean(obj.isFavourite),
+            isArchived: Boolean(obj.isArchived),
+            isDeleted: Boolean(obj.isDeleted),
+          },
         ];
         tempPhotosState.sort((a, b) =>
           b?.timeCreated.localeCompare(a?.timeCreated)
@@ -71,10 +79,9 @@ function Photos() {
         }));
       })
     );
-  
+
     dispatch(setPhotos(tempPhotosState));
   }
-  
 
   return (
     <CarouselContext.Provider value={{ setShowCarousel, setActiveIndex }}>

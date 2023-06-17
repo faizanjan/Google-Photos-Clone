@@ -94,6 +94,7 @@ function NavBar() {
             path,
             url,
             timeCreated: snapshot.metadata.timeCreated,
+            isFavourite: false
           };
           dispatch(addPhoto(newPhoto));
         } catch (error) {

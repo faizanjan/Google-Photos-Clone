@@ -1,11 +1,11 @@
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { CarouselContext } from "./Photos.jsx";
 import { useSelector } from "react-redux";
 import { db, storage } from "../firebase/firebase.config.js";
-import { deleteDoc, doc } from "firebase/firestore";
+import { deleteDoc, doc, updateDoc } from "firebase/firestore";
 import { ref, deleteObject } from "firebase/storage";
 import { useAuth } from "../contexts/AuthContext.jsx";
-import { deletePhoto } from "../Redux/photos.store.js";
+import { deletePhoto, toggleFav } from "../Redux/photos.store.js";
 import { useDispatch } from "react-redux";
 
 import ToolTip from "./secondary_components/ToolTip.jsx";
@@ -15,29 +15,37 @@ const CarouselToolbar = ({ photoIndex }) => {
   let photo = useSelector((state) => state.photos[photoIndex]);
   let { currentUser } = useAuth();
   let dispatch = useDispatch();
+  const [isFav, setIsFav] = useState(Boolean(photo.isFavourite))
+
+  useEffect(()=>{
+    setIsFav(Boolean(photo.isFavourite))
+  }, [photo])
 
   const handleDelete = async (event, path, docId) => {
     event.stopPropagation();
     try {
+      let photoDoc = doc(db, `Users/${currentUser.uid}/Photos`, docId);
       let dltref = ref(storage, path);
       await deleteObject(dltref);
-    } catch (error) {
-      console.error(
-        "Couldn't delete the referenced item from storage:",
-        error.message
-      );
-    }
-    let photoDoc = doc(db, `Users/${currentUser.uid}/Photos`, docId);
-    try {
       await deleteDoc(photoDoc);
+      dispatch(deletePhoto(docId));
     } catch (error) {
       console.error(
-        "Couldn't delete the document from collection:",
+        "Couldn't delete the referenced item:",
         error.message
       );
     }
-    dispatch(deletePhoto(docId));
   };
+
+const toggleFavourite = async (docId) => {
+  const photoDocRef = doc(db, `Users/${currentUser.uid}/Photos`, docId);
+  try {
+    await updateDoc(photoDocRef, { isFavourite: !photo.isFavourite });
+    dispatch (toggleFav(docId))
+  } catch (error) {
+    console.error("Couldn't update the document in the collection:", error.message);
+  }
+};
 
   return (
     <div className="carousel-toolbar bg-dark py-4 d-flex flex-row justify-content-between align-items-center">
@@ -63,13 +71,17 @@ const CarouselToolbar = ({ photoIndex }) => {
           <i className="mx-3 hover-pointer text-light fa-solid fa-circle-info"></i>
         </ToolTip>
         <ToolTip tooltip="Favourite">
-          <i className="mx-3 hover-pointer text-light fa-regular fa-star"></i>
+          <i 
+            className={"mx-3 hover-pointer text-light fa-star" + (isFav? " fa-solid":" fa-regular")}
+            onClick={() => {
+              toggleFavourite(photo.id)
+            }}
+            ></i>
         </ToolTip>
         <ToolTip tooltip="Delete">
           <i
             className="mx-3 hover-pointer text-light fa-solid fa-trash-can"
             onClick={(e) => {
-              // console.log(photo.id)
               handleDelete(e, photo.path, photo.id)
             }}
           ></i>

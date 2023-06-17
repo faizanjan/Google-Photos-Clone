@@ -16,7 +16,6 @@ let photoSlice = createSlice({
         index: photo.index + 1,
       }));
     },
-    
     deletePhoto: (state, action) => {
       const updatedPhotos = state.filter(photo=>photo.id !== action.payload)
       .map((photo, index) => {
@@ -24,7 +23,17 @@ let photoSlice = createSlice({
       })
       return updatedPhotos;
     },
+    toggleFav: (state, action)=>{
+      const toggledPhotos = state.map(photo=>{
+        if(photo.id!==action.payload) return photo;
+        else return {
+          ...photo,
+          isFavourite: !photo.isFavourite
+        }
+      })
+      return toggledPhotos;
+    }
   },
 });
-export const { setPhotos, addPhoto, deletePhoto } = photoSlice.actions;
+export const { setPhotos, addPhoto, deletePhoto, toggleFav } = photoSlice.actions;
 export default photoSlice.reducer;
