@@ -1,7 +1,20 @@
+import {useRef, useEffect} from 'react';
+
 import Carousel from "react-bootstrap/Carousel";
 import CarouselToolbar from "./CarouselToolbar";
 
-function PhotoCarousel({ photos, activeIndex, setActiveIndex }) {
+function PhotoCarousel({
+  photos,
+  activeIndex,
+  setActiveIndex,
+  setShowCarousel,
+}) {
+
+  const divRef = useRef(null);
+
+  useEffect(() => {
+    divRef.current.focus();
+  }, []);
 
   let carouselPhotos = Object.values(photos)
     .map((monthPhotos) => monthPhotos.map((photo) => photo))
@@ -9,6 +22,20 @@ function PhotoCarousel({ photos, activeIndex, setActiveIndex }) {
 
   const handleSelect = (selectedIndex) => {
     setActiveIndex(selectedIndex);
+  };
+
+  const handleKeyPress = (e) => {
+    switch (e.key) {
+      case "ArrowRight":
+        setActiveIndex(activeIndex + 1);
+        break;
+      case "ArrowLeft":
+        setActiveIndex(activeIndex - 1);
+        break;
+      case "Escape":
+        setShowCarousel(false);
+        break;
+    }
   };
 
   return (
@@ -20,10 +47,17 @@ function PhotoCarousel({ photos, activeIndex, setActiveIndex }) {
         left: 0,
         right: 0,
       }}
+      tabIndex={0}
+      onKeyDown={handleKeyPress}
+      ref={divRef}
     >
-      <CarouselToolbar photoIndex={activeIndex}/>
+      <CarouselToolbar photoIndex={activeIndex} />
 
-      <Carousel activeIndex={activeIndex} onSelect={handleSelect} className="bg-dark">
+      <Carousel
+        activeIndex={activeIndex}
+        onSelect={handleSelect}
+        className="bg-dark"
+      >
         {carouselPhotos.map((photo) => {
           return (
             <Carousel.Item key={photo.id}>

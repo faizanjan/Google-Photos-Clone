@@ -96,6 +96,7 @@ function Photos() {
             photos={photos}
             activeIndex={activeIndex}
             setActiveIndex={setActiveIndex}
+            setShowCarousel={setShowCarousel}
           />
         )}
       </div>
