@@ -68,7 +68,10 @@ const CarouselToolbar = ({ photoIndex }) => {
         <ToolTip tooltip="Delete">
           <i
             className="mx-3 hover-pointer text-light fa-solid fa-trash-can"
-            onClick={(e) => handleDelete(e, photo.path, photo.id)}
+            onClick={(e) => {
+              // console.log(photo.id)
+              handleDelete(e, photo.path, photo.id)
+            }}
           ></i>
         </ToolTip>
         <ToolTip tooltip="More Options">
