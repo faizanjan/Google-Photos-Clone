@@ -1,5 +1,5 @@
 import { useContext} from "react";
-import { CarouselContext } from "./Photos.jsx";
+import { CarouselContext } from "./Home.jsx";
 
 const Photo = ({ photo }) => {
 

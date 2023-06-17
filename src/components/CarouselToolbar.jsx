@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { CarouselContext } from "./Photos.jsx";
+import { CarouselContext } from "./Home.jsx";
 import { useSelector } from "react-redux";
 import { db, storage } from "../firebase/firebase.config.js";
 import { deleteDoc, doc, updateDoc } from "firebase/firestore";
