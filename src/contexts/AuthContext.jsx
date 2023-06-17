@@ -8,6 +8,9 @@ import {
   signOut,
 } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
+import { setPhotos } from "../Redux/photos.store";
+import { setProfilePhotos } from "../Redux/profilePhoto.store";
+import { useDispatch } from "react-redux";
 
 import Backdrop from "../components/secondary_components/Backdrop";
 
@@ -18,7 +21,7 @@ const AuthProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
-
+  const dispatch = useDispatch()
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
@@ -54,6 +57,8 @@ const AuthProvider = ({ children }) => {
     try {
       await signOut(auth);
       setCurrentUser(null);
+      dispatch(setPhotos([]));
+      dispatch(setProfilePhotos([]));
       navigate("/signin");
     } catch (error) {
       console.error("Logout error:", error);

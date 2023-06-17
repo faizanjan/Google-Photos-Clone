@@ -52,7 +52,6 @@ function SignUp() {
         "Profile Photos"
       );
 
-      //
       const storageRef = ref(
         storage,
         `users/${user.uid}/profile-pictures/${dpRef.current.file.name}`
@@ -70,7 +69,6 @@ function SignUp() {
         timeCreated: snapshot.metadata.timeCreated,
       };
       dispatch(setProfilePhotos([newPhoto]));
-      //
 
       setError("");
       navigate("/home/photos");
