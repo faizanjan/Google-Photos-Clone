@@ -1,16 +1,16 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
-const Aside = () => {
-  let [activeTab, setActiveTab] = useState(0);
+const Aside = ({pathname}) => {
+  let [activeTab, setActiveTab] = useState(pathname);
 
   return (
     <div className="aside d-flex flex-column pt-0">
       <div className="main-aside-tabs d-flex flex-column mt-1">
         <ul className="py-3 ps-0 mb-0">
           <li
-            className={activeTab === 0 ? "active-aside-tab" : ""}
-            onClick={() => setActiveTab(0)}
+            className={activeTab === "/home/photos" ? "active-aside-tab" : ""}
+            onClick={() => setActiveTab("/home/photos")}
           >
             <Link to="/home/photos">
               <i className="fa-solid fa-image me-4"></i>
@@ -18,19 +18,19 @@ const Aside = () => {
             </Link>
           </li>
           <li
-            className={activeTab === 1 ? "active-aside-tab" : ""}
-            onClick={() => setActiveTab(1)}
+            className={activeTab === "/home/explore" ? "active-aside-tab" : ""}
+            onClick={() => setActiveTab("/home/explore")}
           >
-            <Link to="/">
+            <Link to="/home/explore">
               <i className="fa-solid fa-magnifying-glass me-4"></i>
               <span>Explore</span>
             </Link>
           </li>
           <li
-            className={activeTab === 2 ? "active-aside-tab" : ""}
-            onClick={() => setActiveTab(2)}
+            className={activeTab === "/home/sharing" ? "active-aside-tab" : ""}
+            onClick={() => setActiveTab("/home/sharing")}
           >
-            <Link to="/">
+            <Link to="/home/sharing">
               <i className="fa-solid fa-user-group me-4"></i>
               <span>Sharing</span>
             </Link>
@@ -44,44 +44,44 @@ const Aside = () => {
         </span>
         <ul className="py-3 ps-0 mb-0">
           <li
-            className={activeTab === 3 ? "active-aside-tab" : ""}
-            onClick={() => setActiveTab(3)}
+            className={activeTab === "/home/favourites" ? "active-aside-tab" : ""}
+            onClick={() => setActiveTab("/home/favourites")}
           >
-            <Link to="/">
+            <Link to="/home/favourites">
               <i className="fa-regular fa-star me-4"></i>
               <span>Favourites</span>
             </Link>
           </li>
           <li
-            className={activeTab === 4 ? "active-aside-tab" : ""}
-            onClick={() => setActiveTab(4)}
+            className={activeTab === "/home/albums" ? "active-aside-tab" : ""}
+            onClick={() => setActiveTab("/home/albums")}
           >
-            <Link to="/">
+            <Link to="/home/albums">
               <i className="fa-solid fa-book-bookmark me-4"></i>
               <span>Albums</span>
             </Link>
           </li>
           <li
-            className={activeTab === 5 ? "active-aside-tab" : ""}
-            onClick={() => setActiveTab(5)}
+            className={activeTab === "/home/utilities" ? "active-aside-tab" : ""}
+            onClick={() => setActiveTab("/home/utilities")}
           >
-            <Link to="/">
+            <Link to="/home/utilities">
               <i className="fa-solid fa-check-to-slot me-4"></i>
               <span>Utilities</span>
             </Link>
           </li>
           <li
-            className={activeTab === 6 ? "active-aside-tab" : ""}
-            onClick={() => setActiveTab(6)}
+            className={activeTab === "/home/archive" ? "active-aside-tab" : ""}
+            onClick={() => setActiveTab("/home/archive")}
           >
-            <Link to="/">
+            <Link to="/home/archive">
               <i className="fa-solid fa-file-arrow-down me-4"></i>
               <span>Archive</span>
             </Link>
           </li>
           <li
-            className={activeTab === 7 ? "active-aside-tab" : ""}
-            onClick={() => setActiveTab(7)}
+            className={activeTab === "/home/bin" ? "active-aside-tab" : ""}
+            onClick={() => setActiveTab("/home/bin")}
           >
             <Link to="/home/bin">
               <i className="fa-solid fa-trash-can me-4"></i>
