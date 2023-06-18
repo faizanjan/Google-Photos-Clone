@@ -5,17 +5,21 @@ import { db, storage } from "../firebase/firebase.config.js";
 import { deleteDoc, doc, updateDoc } from "firebase/firestore";
 import { ref, deleteObject } from "firebase/storage";
 import { useAuth } from "../contexts/AuthContext.jsx";
-import { deletePhoto, moveToBin, toggleFav } from "../Redux/photos.store.js";
+import { deletePhoto, addPhoto, toggleFav } from "../Redux/photos.store.js";
+import { addPhotoToTrash, removePhotoFromTrash } from "../Redux/trashPhotos.store.js";
 import { useDispatch } from "react-redux";
 import { useLocation } from "react-router-dom";
 
 import ToolTip from "./secondary_components/ToolTip.jsx";
+import { getStateKey } from "../modules/processPhotos.js";
 
 const CarouselToolbar = ({ photoIndex }) => {
   let { pathname } = useLocation();
   let { setShowCarousel } = useContext(CarouselContext);
   let { currentUser } = useAuth();
-  let photo = useSelector((state) => state.photos[photoIndex]);
+
+  let key = getStateKey(pathname);
+  let photo = useSelector((state) => state[key][photoIndex]);
   const [isFav, setIsFav] = useState(Boolean(photo.isFavourite));
   let dispatch = useDispatch();
 
@@ -30,18 +34,19 @@ const CarouselToolbar = ({ photoIndex }) => {
       let dltref = ref(storage, path);
       await deleteObject(dltref);
       await deleteDoc(photoDoc);
-      dispatch(deletePhoto(docId));
+      dispatch(removePhotoFromTrash(docId));
     } catch (error) {
       console.error("Couldn't delete the referenced item:", error.message);
     }
   };
 
-  const toggleTrash = async (e,docId) => {
+  const addToTrash = async (e,docId) => {
     e.stopPropagation();
     const photoDocRef = doc(db, `Users/${currentUser.uid}/Photos`, docId);
     try {
-      await updateDoc(photoDocRef, { isDeleted: !photo.isDeleted });
-      dispatch(moveToBin(docId));
+      await updateDoc(photoDocRef, { isDeleted: true });
+      dispatch(deletePhoto(docId));
+      dispatch(addPhotoToTrash(photo))
     } catch (error) {
       console.error(
         "Couldn't update the document in the collection:",
@@ -49,6 +54,23 @@ const CarouselToolbar = ({ photoIndex }) => {
       );
     }
   };
+
+  const handleRestore = async (e,docId)=>{
+    if(!docId) return;
+    e.stopPropagation();
+    const photoDocRef = doc(db, `Users/${currentUser.uid}/Photos`, docId);
+    try {
+      await updateDoc(photoDocRef, { isDeleted: false });
+      dispatch(removePhotoFromTrash(docId));
+      dispatch(addPhoto(photo))
+    } catch (error) {
+      console.error(
+        "Couldn't update the document in the collection:",
+        error.message
+      );
+    }
+  }
+
   const toggleFavourite = async (docId) => {
     const photoDocRef = doc(db, `Users/${currentUser.uid}/Photos`, docId);
     try {
@@ -98,7 +120,7 @@ const CarouselToolbar = ({ photoIndex }) => {
           style={pathname !== "/home/bin" ? { display: "none" } : {}}
           className="delete-from-bin text-light mx-3 hover-pointer "
           onClick={(e) => {
-            toggleTrash(e, photo.id);
+            handleRestore(e, photo.id);
           }}
         >
           <i className="mx-3 fa-solid fa-clock-rotate-left"></i>
@@ -128,7 +150,7 @@ const CarouselToolbar = ({ photoIndex }) => {
             style={pathname === "/home/bin" ? { display: "none" } : {}}
             className="mx-3 hover-pointer text-light fa-solid fa-trash-can"
             onClick={(e) => {
-              toggleTrash(e, photo.id);
+              addToTrash(e, photo.id);
             }}
           ></i>
         </ToolTip>

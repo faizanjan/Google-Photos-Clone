@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { collection, getDocs } from "firebase/firestore";
 import { getDownloadURL, ref, getMetadata } from "firebase/storage";
 import { setPhotos } from "../Redux/photos.store.js";
+import { setTrashPhotos } from "../Redux/trashPhotos.store.js";
 import { Routes, Route, useLocation } from "react-router-dom";
 import {
   createPhotosArr,
@@ -28,8 +29,23 @@ const Home = () => {
   const [showCarousel, setShowCarousel] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
 
-  let photos_from_redux = useSelector((state) => state.photos);
-  let photos = createPhotosArr(photos_from_redux);
+  let photos_from_redux = useSelector((state) => state);
+  let photos = createPhotosArr(photos_from_redux.photos);
+  let trashPhotos = createPhotosArr(photos_from_redux.bin);
+  let archivedPhotos = createPhotosArr(photos_from_redux.archived);
+  let favPhotos = createPhotosArr(photos_from_redux.favourite);
+
+  let getCarouselPhotos = ()=>{
+    if (pathname === "/home/bin") {
+      return trashPhotos;
+    } else if (pathname === "/home/archive") {
+      return archivedPhotos;
+    }  else if (pathname === "/home/favourites") {
+      return favPhotos;
+    }  else if (pathname === ("/home/photos")){
+      return photos;
+    }
+  }
 
   let { currentUser } = useAuth();
   let dispatch = useDispatch();
@@ -65,15 +81,11 @@ const Home = () => {
           ...tempPhotosState,
           createPhotoObj(obj, url, timeCreated),
         ];
-        tempPhotosState = filterPhotosByPath(tempPhotosState, pathname);
-        tempPhotosState = tempPhotosState.map((photoObj, index) => ({
-          ...photoObj,
-          index,
-        }));
       })
     );
-
-    dispatch(setPhotos(tempPhotosState));
+    tempPhotosState = filterPhotosByPath(tempPhotosState, pathname);
+    dispatch(setPhotos(tempPhotosState.photos));
+    dispatch(setTrashPhotos(tempPhotosState.bin));
   }
   return (
     <div>
@@ -83,12 +95,15 @@ const Home = () => {
           <Aside pathname={pathname} />
           <Routes>
             <Route path="photos" element={<Photos photos={photos} />} />
-            <Route path="favourites" element={<Favourites photos={photos} />} />
-            <Route path="bin" element={<Bin photos={photos}/>} />
+            <Route
+              path="favourites"
+              element={<Favourites photos={favPhotos} />}
+            />
+            <Route path="bin" element={<Bin photos={trashPhotos} />} />
           </Routes>
           {showCarousel && (
             <PhotoCarousel
-              photos={photos}
+              photos={getCarouselPhotos()}
               activeIndex={activeIndex}
               setActiveIndex={setActiveIndex}
               setShowCarousel={setShowCarousel}

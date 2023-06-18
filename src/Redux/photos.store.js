@@ -18,9 +18,6 @@ let photoSlice = createSlice({
     },
     deletePhoto: (state, action) => {
       const updatedPhotos = state.filter(photo=>photo.id !== action.payload)
-      .map((photo, index) => {
-        return { ...photo, index};
-      })
       return updatedPhotos;
     },
     toggleFav: (state, action)=>{
@@ -33,17 +30,7 @@ let photoSlice = createSlice({
       })
       return updatedPhotos;
     },
-    moveToBin: (state, action)=>{
-      const updatedPhotos = state.map(photo=>{
-        if(photo.id!==action.payload) return photo;
-        else return {
-          ...photo,
-          isDeleted: !photo.isDeleted
-        }
-      })
-      return updatedPhotos;
-    }
   },
 });
-export const { setPhotos, addPhoto, deletePhoto, toggleFav, moveToBin } = photoSlice.actions;
+export const { setPhotos, addPhoto, deletePhoto, toggleFav } = photoSlice.actions;
 export default photoSlice.reducer;

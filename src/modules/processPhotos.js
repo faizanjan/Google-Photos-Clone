@@ -1,7 +1,8 @@
 export let createPhotosArr = (photos) => {
+  if(!photos) return []
   return photos
-    .map((photo) => {
-      return { ...photo, timeCreated: new Date(photo.timeCreated) };
+    .map((photo,index) => {
+      return { ...photo, timeCreated: new Date(photo.timeCreated), index };
     })
     .reduce((acc, photo) => {
       let key =
@@ -24,32 +25,35 @@ export let createPhotoObj = (obj, url, timeCreated) => {
   };
 };
 
-export function filterPhotosByPath(photos, pathname) {
-  return photos
-    .sort((a, b) => b?.timeCreated.localeCompare(a?.timeCreated))
-    .filter((photo) => {
-      switch (pathname) {
-        case "/home/photos":
-          return !photo.isArchived && !photo.isDeleted;
-        case "/home/favourites":
-          return photo.isFavourite;
-        case "/home/archive":
-          return photo.isArchived;
-        case "/home/bin":
-          return photo.isDeleted;
-        default:
-          return false;
-      }
-    });
+export function filterPhotosByPath(photos) {
+  const result = {
+    favourites: [],
+    bin: [],
+    archived: [],
+    photos: []
+  };
+
+  photos.sort((a, b) => b?.timeCreated.localeCompare(a?.timeCreated));
+
+  photos.forEach(photo => {
+    if (photo.isFavourite) {
+      result.favourites.push(photo);
+    }
+    if (photo.isDeleted) {
+      result.bin.push(photo);
+    }
+    if (photo.isArchived) {
+      result.archived.push(photo);
+    }
+    if (!photo.isArchived && !photo.isDeleted) {
+      result.photos.push(photo);
+    }
+  });
+
+  return result;
 }
 
-
-export function showPhoto(pathname, photo){
-  if (pathname === "/home/bin") {
-    return photo.isDeleted;
-  } else if (pathname === "/home/archive") {
-    return photo.isArchived;
-  } else if (pathname.startsWith("/home/")){
-    return !photo.isDeleted && !photo.isArchived;
-  }
+export function getStateKey(pathname){
+  let index = pathname.lastIndexOf('/');
+  return pathname.substring(index+1);
 }

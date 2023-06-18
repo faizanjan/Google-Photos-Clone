@@ -1,14 +1,12 @@
 import { useContext } from "react";
 import { CarouselContext } from "./Home.jsx";
 import { useLocation } from "react-router-dom";
-import { showPhoto } from "../modules/processPhotos.js";
 
 const Photo = ({ photo }) => {
   let { pathname } = useLocation();
 
   let { setShowCarousel, setActiveIndex } = useContext(CarouselContext);
 
-  if (showPhoto(pathname, photo))
     return (
       <div
         className="photo-container d-flex flex-column position-relative"

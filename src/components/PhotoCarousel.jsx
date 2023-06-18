@@ -1,6 +1,4 @@
 import { useRef, useEffect } from "react";
-import { useLocation } from "react-router-dom";
-import { showPhoto } from "../modules/processPhotos";
 
 import Carousel from "react-bootstrap/Carousel";
 import CarouselToolbar from "./CarouselToolbar";
@@ -12,7 +10,6 @@ function PhotoCarousel({
   setShowCarousel,
 }) {
   const divRef = useRef(null);
-  let { pathname } = useLocation();
 
   useEffect(() => {
     divRef.current.focus();
@@ -61,7 +58,6 @@ function PhotoCarousel({
         className="bg-dark"
       >
         {carouselPhotos
-          .filter((photo) => showPhoto(pathname,photo))
           .map((photo) => {
             return (
               <Carousel.Item key={photo.id}>
