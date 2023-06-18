@@ -1,15 +1,12 @@
 import { createContext, useEffect, useState } from "react";
-import { db, storage } from "../firebase/firebase.config.js";
 import { useAuth } from "../contexts/AuthContext.jsx";
 import { useDispatch, useSelector } from "react-redux";
-import { collection, getDocs } from "firebase/firestore";
-import { getDownloadURL, ref, getMetadata } from "firebase/storage";
 import { setPhotos } from "../Redux/photos.store.js";
 import { setTrashPhotos } from "../Redux/trashPhotos.store.js";
 import { Routes, Route, useLocation } from "react-router-dom";
+import { getPhotoUrls } from "../modules/getPhotos.js";
 import {
   createPhotosArr,
-  createPhotoObj,
   filterPhotosByPath,
 } from "../modules/processPhotos.js";
 
@@ -35,58 +32,33 @@ const Home = () => {
   let archivedPhotos = createPhotosArr(photos_from_redux.archived);
   let favPhotos = createPhotosArr(photos_from_redux.favourite);
 
-  let getCarouselPhotos = ()=>{
+  let getCarouselPhotos = () => {
     if (pathname === "/home/bin") {
       return trashPhotos;
     } else if (pathname === "/home/archive") {
       return archivedPhotos;
-    }  else if (pathname === "/home/favourites") {
+    } else if (pathname === "/home/favourites") {
       return favPhotos;
-    }  else if (pathname === ("/home/photos")){
+    } else if (pathname === "/home/photos") {
       return photos;
     }
-  }
+  };
 
   let { currentUser } = useAuth();
   let dispatch = useDispatch();
 
   useEffect(() => {
-    if (currentUser) getPhotoUrls();
+    if (currentUser) {
+      getPhotoUrls(currentUser).then((tempPhotosState) => {
+        tempPhotosState = filterPhotosByPath(tempPhotosState, pathname);
+        dispatch(setPhotos(tempPhotosState.photos));
+        dispatch(setTrashPhotos(tempPhotosState.bin));
+      });
+    }
   }, [currentUser, pathname]);
 
   if (!currentUser) return <Backdrop />;
 
-  const usersCollection = collection(db, "Users");
-  const photosCollection = collection(
-    usersCollection,
-    currentUser.uid,
-    "Photos"
-  );
-
-  async function getPhotoUrls() {
-    let photoDocs = await getDocs(photosCollection);
-    let photoObjs = photoDocs.docs.map((doc) => ({
-      ...doc.data(),
-      id: doc.id,
-    }));
-
-    let tempPhotosState = [];
-
-    await Promise.all(
-      photoObjs.map(async (obj) => {
-        let photoRef = ref(storage, obj.path);
-        let { timeCreated } = await getMetadata(photoRef);
-        let url = await getDownloadURL(photoRef);
-        tempPhotosState = [
-          ...tempPhotosState,
-          createPhotoObj(obj, url, timeCreated),
-        ];
-      })
-    );
-    tempPhotosState = filterPhotosByPath(tempPhotosState, pathname);
-    dispatch(setPhotos(tempPhotosState.photos));
-    dispatch(setTrashPhotos(tempPhotosState.bin));
-  }
   return (
     <div>
       <CarouselContext.Provider value={{ setShowCarousel, setActiveIndex }}>
