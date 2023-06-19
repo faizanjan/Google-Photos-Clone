@@ -8,12 +8,7 @@ let trashPhotoSlice = createSlice({
       return action.payload;
     },
     addPhotoToTrash: (state, action) => {
-      const newPhoto = { ...action.payload, index: -1 };
-      const updatedState = [newPhoto, ...state];
-    
-      return updatedState.map((photo) => ({
-        ...photo,
-      }));
+      return [action.payload, ...state];
     },
     removePhotoFromTrash: (state, action) => {
       const updatedPhotos = state.filter(photo=>photo.id !== action.payload)
