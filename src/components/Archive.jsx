@@ -7,9 +7,12 @@ function Arhive({ photos }) {
       style={{
         position: "relative",
         overflowY: "scroll",
+        width: "100%",
       }}
     >
-      <h1 className="mt-5 pb-3">Archive</h1>
+      <div className="mt-4 pb-3 d-flex flex-row justify-content-between border-bottom">
+        <span className="text-dark ms-3 fs-5">Archive</span>
+      </div>
       <div className="month-grid">
         {Object.keys(photos).map((month) => {
           return <MonthGrid key={month} monthPhotos={photos[month]} />;
