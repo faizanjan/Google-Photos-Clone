@@ -12,10 +12,10 @@ import {
 } from "../Redux/trashPhotos.store.js";
 import { useDispatch } from "react-redux";
 import { useLocation } from "react-router-dom";
-
-import ToolTip from "./secondary_components/ToolTip.jsx";
 import { getStateKey } from "../modules/processPhotos.js";
 import { addPhotoToFav, removePhotoFromFav } from "../Redux/favPhotos.store.js";
+
+import ToolTip from "./secondary_components/ToolTip.jsx";
 import MoreInfo from "./secondary_components/MoreInfo.jsx";
 
 const CarouselToolbar = ({ photoIndex, setActiveIndex, lastIndex }) => {
