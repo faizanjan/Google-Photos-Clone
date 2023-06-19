@@ -127,3 +127,31 @@ li.active-aside-tab:hover {
   font-weight: bold;
   text-decoration: none;
 }
+
+/* Albums */
+
+#new-album-name{
+  font-size:3rem !important;
+  border:none;
+  transition: all 0.2s;
+  width: 80%;
+  outline: none;
+
+}
+#new-album-name:hover{
+ border-bottom: 1px solid gray;
+}
+#new-album-name:focus{
+  border:none !important;
+  border-bottom: 2px solid rgb(26,115,232) !important;
+}
+
+#select-album-photos-btn{
+  padding: 40px 80px !important;
+  background: none;
+  min-width: 370px;  
+}
+
+#select-album-photos-btn:hover{
+  background: #f1f1f1 !important;
+}

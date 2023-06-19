@@ -15,6 +15,7 @@ import {
 import NavBar from "./NavBar";
 import Aside from "./Aside";
 import Photos from "./Photos";
+import Albums from "./Albums";
 import Favourites from "./Favourites";
 import Archive from "./Archive";
 import Bin from "./Bin";
@@ -79,7 +80,7 @@ const Home = () => {
               path="favourites"
               element={<Favourites photos={favPhotos} />}
             />
-            <Route path="albums" element={<ComingSoon />} />
+            <Route path="albums" element={<Albums />} />
             <Route path="utilities" element={<ComingSoon />} />
             <Route path="archived" element={<Archive photos={archivedPhotos} />} />
             <Route path="bin" element={<Bin photos={trashPhotos} />} />
