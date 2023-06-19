@@ -15,6 +15,7 @@ import NavBar from "./NavBar";
 import Aside from "./Aside";
 import Photos from "./Photos";
 import Favourites from "./Favourites";
+import Archive from "./Archive";
 import Bin from "./Bin";
 import Backdrop from "./secondary_components/Backdrop.jsx";
 import PhotoCarousel from "./PhotoCarousel.jsx";
@@ -78,6 +79,7 @@ const Home = () => {
             />
             <Route path="albums" element={<ComingSoon />} />
             <Route path="utilities" element={<ComingSoon />} />
+            <Route path="archive" element={<Archive photos={archivedPhotos} />} />
             <Route path="bin" element={<Bin photos={trashPhotos} />} />
           </Routes>
           {showCarousel && (
