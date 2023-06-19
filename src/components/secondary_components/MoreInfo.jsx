@@ -1,6 +1,9 @@
 import { db } from "../../firebase/firebase.config.js";
 import { doc, updateDoc } from "firebase/firestore";
-import { archivePhoto, unArchivePhoto } from "../../Redux/archivePhotos.store.js";
+import {
+  archivePhoto,
+  unArchivePhoto,
+} from "../../Redux/archivePhotos.store.js";
 import { addPhoto, deletePhoto } from "../../Redux/photos.store";
 import { useDispatch } from "react-redux";
 
@@ -8,10 +11,10 @@ import Dropdown from "react-bootstrap/Dropdown";
 import DropdownButton from "react-bootstrap/DropdownButton";
 
 function MoreInfo({ photo, currentUser }) {
-
   let docId = photo.id;
 
   const dispatch = useDispatch();
+
   const handleArchive = async () => {
     const photoDocRef = doc(db, `Users/${currentUser.uid}/Photos`, docId);
     try {
@@ -40,17 +43,35 @@ function MoreInfo({ photo, currentUser }) {
     }
   };
 
+  const handleDownload = () => {
+    fetch(photo.url)
+      .then((response) => response.blob())
+      .then((blob) => {
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = "";
+        link.click();
+        URL.revokeObjectURL(url);
+      })
+      .catch((error) => {
+        console.error("Error downloading the photo:", error);
+      });
+  };
+
   return (
     <DropdownButton
       className="d-inline custom-dropdown"
       id="dropdown-basic-button"
       title="&#8942;"
-      variant="link"
+      variant=""
     >
       <Dropdown.Item className="px-4 py-3" disabled>
         Slideshow
       </Dropdown.Item>
-      <Dropdown.Item className="px-4 py-3">Download</Dropdown.Item>
+      <Dropdown.Item className="px-4 py-3" onClick={handleDownload}>
+        Download
+      </Dropdown.Item>
       <Dropdown.Item className="px-4 py-3" disabled>
         Rotate Left
       </Dropdown.Item>
