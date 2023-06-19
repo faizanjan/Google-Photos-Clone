@@ -26,10 +26,11 @@ function PhotoCarousel({
   const handleKeyPress = (e) => {
     switch (e.key) {
       case "ArrowRight":
-        setActiveIndex(activeIndex + 1);
+        if (activeIndex !== carouselPhotos.length - 1)
+          setActiveIndex(activeIndex + 1);
         break;
       case "ArrowLeft":
-        setActiveIndex(activeIndex - 1);
+        if (activeIndex !== 0) setActiveIndex(activeIndex - 1);
         break;
       case "Escape":
         setShowCarousel(false);
@@ -57,23 +58,22 @@ function PhotoCarousel({
         onSelect={handleSelect}
         className="bg-dark"
       >
-        {carouselPhotos
-          .map((photo) => {
-            return (
-              <Carousel.Item key={photo.id}>
-                <img
-                  className="d-block w-100"
-                  src={photo.url}
-                  alt={photo.id}
-                  style={{
-                    height: "calc(100vh - 75px)",
-                    width: "auto",
-                    objectFit: "contain",
-                  }}
-                />
-              </Carousel.Item>
-            );
-          })}
+        {carouselPhotos.map((photo) => {
+          return (
+            <Carousel.Item key={photo.id}>
+              <img
+                className="d-block w-100"
+                src={photo.url}
+                alt={photo.id}
+                style={{
+                  height: "calc(100vh - 75px)",
+                  width: "auto",
+                  objectFit: "contain",
+                }}
+              />
+            </Carousel.Item>
+          );
+        })}
       </Carousel>
     </div>
   );
