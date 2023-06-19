@@ -65,7 +65,6 @@ a{
 
 .aside li {
   max-width: 230px;
-  padding: 9px 12px 9px 24px;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -92,6 +91,7 @@ li.active-aside-tab:hover {
   text-decoration: none;
   color: rgb(95,99,104) !important;
   width: 100%;
+  padding: 9px 12px 9px 24px;
 }
 .aside a span{
   color: #3c4043;

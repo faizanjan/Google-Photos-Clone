@@ -91,16 +91,16 @@ const Aside = ({pathname}) => {
         </ul>
       </div>
 
-      <div className="storage ms-3 ps-1 pt-4 border-top">
-        <span
+      <div className="storage pt-4 border-top">
+        <li
           className={activeTab === 8 ? "active-aside-tab" : ""}
           onClick={() => setActiveTab(8)}
         >
-          <Link to="/bin">
+          <Link to="/home/storage">
             <i className="fa-solid fa-cloud me-4"></i>
             <span>Storage</span>
           </Link>
-        </span>
+        </li>
       </div>
     </div>
   );
