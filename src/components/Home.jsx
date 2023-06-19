@@ -18,6 +18,7 @@ import Favourites from "./Favourites";
 import Bin from "./Bin";
 import Backdrop from "./secondary_components/Backdrop.jsx";
 import PhotoCarousel from "./PhotoCarousel.jsx";
+import ComingSoon from "./secondary_components/ComingSoon.jsx";
 
 export let CarouselContext = createContext();
 
@@ -69,10 +70,14 @@ const Home = () => {
           <Aside pathname={pathname} />
           <Routes>
             <Route path="photos" element={<Photos photos={photos} />} />
+            <Route path="explore" element={<ComingSoon />} />
+            <Route path="sharing" element={<ComingSoon />} />
             <Route
               path="favourites"
               element={<Favourites photos={favPhotos} />}
             />
+            <Route path="albums" element={<ComingSoon />} />
+            <Route path="utilities" element={<ComingSoon />} />
             <Route path="bin" element={<Bin photos={trashPhotos} />} />
           </Routes>
           {showCarousel && (
