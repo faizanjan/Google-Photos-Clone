@@ -51,7 +51,11 @@ function PhotoCarousel({
       onKeyDown={handleKeyPress}
       ref={divRef}
     >
-      <CarouselToolbar photoIndex={activeIndex} />
+      <CarouselToolbar
+        photoIndex={activeIndex}
+        setActiveIndex={setActiveIndex}
+        lastIndex={carouselPhotos.length - 1}
+      />
 
       <Carousel
         activeIndex={activeIndex}

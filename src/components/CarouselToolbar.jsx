@@ -18,20 +18,23 @@ import { getStateKey } from "../modules/processPhotos.js";
 import { addPhotoToFav, removePhotoFromFav } from "../Redux/favPhotos.store.js";
 import MoreInfo from "./secondary_components/MoreInfo.jsx";
 
-const CarouselToolbar = ({ photoIndex }) => {
+const CarouselToolbar = ({ photoIndex, setActiveIndex, lastIndex }) => {
   let { pathname } = useLocation();
   let { setShowCarousel } = useContext(CarouselContext);
   let { currentUser } = useAuth();
 
   let key = getStateKey(pathname);
   let photo = useSelector((state) => state[key][photoIndex]);
-  const [isFav, setIsFav] = useState(Boolean(photo.isFavourite));
   let dispatch = useDispatch();
-
+  const [isFav, setIsFav] = useState(Boolean(photo?.isFavourite));
+  
   useEffect(() => {
-    setIsFav(Boolean(photo.isFavourite));
+    if(photo)setIsFav(Boolean(photo.isFavourite));
   }, [photo]);
-
+  
+  if(!photo) return ;
+  
+  
   const handleDelete = async (event, path, docId) => {
     event.stopPropagation();
     try {
@@ -39,6 +42,7 @@ const CarouselToolbar = ({ photoIndex }) => {
       let dltref = ref(storage, path);
       await deleteObject(dltref);
       await deleteDoc(photoDoc);
+      if (photoIndex === lastIndex) setActiveIndex(0);
       dispatch(removePhotoFromTrash(docId));
     } catch (error) {
       console.error("Couldn't delete the referenced item:", error.message);
@@ -50,6 +54,7 @@ const CarouselToolbar = ({ photoIndex }) => {
     const photoDocRef = doc(db, `Users/${currentUser.uid}/Photos`, docId);
     try {
       await updateDoc(photoDocRef, { isDeleted: true });
+      if (photoIndex === lastIndex) setActiveIndex(0);
       dispatch(deletePhoto(docId));
       dispatch(addPhotoToTrash(photo));
     } catch (error) {
@@ -68,6 +73,7 @@ const CarouselToolbar = ({ photoIndex }) => {
       await updateDoc(photoDocRef, { isDeleted: false });
       dispatch(removePhotoFromTrash(docId));
       dispatch(addPhoto(photo));
+      if (photoIndex === lastIndex) setActiveIndex(0);
     } catch (error) {
       console.error(
         "Couldn't update the document in the collection:",
@@ -162,7 +168,7 @@ const CarouselToolbar = ({ photoIndex }) => {
             }}
           ></i>
         </ToolTip>
-          <MoreInfo photo={photo} currentUser={currentUser}/>
+        <MoreInfo photo={photo} currentUser={currentUser} />
       </div>
     </div>
   );
