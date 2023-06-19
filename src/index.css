@@ -114,3 +114,16 @@ li.active-aside-tab:hover {
 ::-webkit-scrollbar{
   display: none;
 }
+
+/* More Info Dropdown */
+
+#dropdown-basic-button::after{
+  display: none;
+}
+
+#dropdown-basic-button{
+  color: #F8F9FA;
+  font-size:1.3rem;
+  font-weight: bold;
+  text-decoration: none;
+}

@@ -16,6 +16,7 @@ import { useLocation } from "react-router-dom";
 import ToolTip from "./secondary_components/ToolTip.jsx";
 import { getStateKey } from "../modules/processPhotos.js";
 import { addPhotoToFav, removePhotoFromFav } from "../Redux/favPhotos.store.js";
+import MoreInfo from "./secondary_components/MoreInfo.jsx";
 
 const CarouselToolbar = ({ photoIndex }) => {
   let { pathname } = useLocation();
@@ -80,7 +81,9 @@ const CarouselToolbar = ({ photoIndex }) => {
     try {
       await updateDoc(photoDocRef, { isFavourite: !photo.isFavourite });
       dispatch(toggleFav(docId));
-      dispatch(photo.isFavourite ? removePhotoFromFav(docId) : addPhotoToFav(photo));
+      dispatch(
+        photo.isFavourite ? removePhotoFromFav(docId) : addPhotoToFav(photo)
+      );
     } catch (error) {
       console.error(
         "Couldn't update the document in the collection:",
@@ -160,10 +163,7 @@ const CarouselToolbar = ({ photoIndex }) => {
           ></i>
         </ToolTip>
         <ToolTip tooltip="More Options">
-          <i
-            style={pathname === "/home/bin" ? { display: "none" } : {}}
-            className="mx-3 hover-pointer text-light fa-solid fa-ellipsis-vertical"
-          ></i>
+          <MoreInfo />
         </ToolTip>
       </div>
     </div>
