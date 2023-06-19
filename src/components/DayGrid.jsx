@@ -7,7 +7,7 @@ const DayGrid = ({ photos }) => {
   );
 
   return (
-    <div className="time-line mt-4">
+    <div className="time-line mt-4 mx-4">
       <div className="d-flex flex-column flex-wrap">
         <p className="align-self-start ms-3">
           {dayOfWeek + ", " + dayOfMonth + " " + monthName}

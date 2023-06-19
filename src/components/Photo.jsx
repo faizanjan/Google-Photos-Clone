@@ -9,8 +9,8 @@ const Photo = ({ photo }) => {
 
     return (
       <div
-        className="photo-container d-flex flex-column position-relative"
-        style={{ margin: "20px 5px" }}
+        className="photo-container d-flex flex-column position-relative mx-1"
+        style={{ margin: "20px 0" }}
         onClick={() => {
           setShowCarousel(true);
           setActiveIndex(photo.index);
