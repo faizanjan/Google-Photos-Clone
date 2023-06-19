@@ -27,11 +27,11 @@
   justify-content: center;
 }
 
-a{
+a {
   text-decoration: none;
 }
 /* NavBar */
-.hover-pointer{
+.hover-pointer {
   transition: all 0.2s;
 }
 .hover-pointer:hover {
@@ -43,8 +43,8 @@ a{
   transform: scale(1.2) rotate(90deg);
 }
 
-.profile-container{
- z-index: 100;
+.profile-container {
+  z-index: 100;
 }
 
 /* Aside */
@@ -81,77 +81,96 @@ a{
 }
 
 .aside li:hover {
-  background-color: rgb(241,243,244);
+  background-color: rgb(241, 243, 244);
 }
 li.active-aside-tab:hover {
-  background-color: rgb(232,240,254);
+  background-color: rgb(232, 240, 254);
 }
 
-.aside a{
+.aside a {
   text-decoration: none;
-  color: rgb(95,99,104) !important;
+  color: rgb(95, 99, 104) !important;
   width: 100%;
   padding: 9px 12px 9px 24px;
 }
-.aside a span{
+.aside a span {
   color: #3c4043;
   font-weight: 500;
 }
 
-.active-aside-tab{
-  background-color: rgb(232,240,254) !important;
+.active-aside-tab {
+  background-color: rgb(232, 240, 254) !important;
 }
-.active-aside-tab a, .active-aside-tab a span{
-  color: rgb(26,115,232) !important;
+.active-aside-tab a,
+.active-aside-tab a span {
+  color: rgb(26, 115, 232) !important;
 }
 
 /* photos */
 
-.photos-container{
-  height:calc(100vh - 64px);
+.photos-container {
+  height: calc(100vh - 64px);
 }
 
-::-webkit-scrollbar{
+::-webkit-scrollbar {
   display: none;
 }
 
 /* More Info Dropdown */
 
-#dropdown-basic-button::after{
+#dropdown-basic-button::after {
   display: none;
 }
 
-#dropdown-basic-button{
-  color: #F8F9FA;
-  font-size:1.3rem;
+#dropdown-basic-button {
+  color: #f8f9fa;
+  font-size: 1.3rem;
   font-weight: bold;
   text-decoration: none;
 }
 
 /* Albums */
 
-#new-album-name{
-  font-size:3rem !important;
-  border:none;
+#new-album-name {
+  font-size: 3rem !important;
+  border: none;
   transition: all 0.2s;
   width: 80%;
   outline: none;
+}
+#new-album-name:hover {
+  border-bottom: 1px solid gray;
+}
+#new-album-name:focus {
+  border: none !important;
+  border-bottom: 2px solid rgb(26, 115, 232) !important;
+}
 
-}
-#new-album-name:hover{
- border-bottom: 1px solid gray;
-}
-#new-album-name:focus{
-  border:none !important;
-  border-bottom: 2px solid rgb(26,115,232) !important;
-}
-
-#select-album-photos-btn{
+#select-album-photos-btn {
   padding: 40px 80px !important;
   background: none;
-  min-width: 370px;  
+  min-width: 370px;
 }
 
-#select-album-photos-btn:hover{
+#select-album-photos-btn:hover {
   background: #f1f1f1 !important;
+}
+
+/* Photo Selection for album */
+
+.photo-checkbox label {
+  position: relative;
+  height: 250px;
+  width: auto;
+  display: inline-block;
+  background-size: contain !important;
+  background-repeat: no-repeat;
+}
+.photo-checkbox label input {
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  width: 20px;
+  height: 20px;
+  accent-color: rgba(8, 8, 191, 0);
 }

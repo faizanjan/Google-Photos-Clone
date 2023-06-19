@@ -14,7 +14,7 @@ function Albums() {
         width: "100%",
       }}
     >
-      <div className="mt-4 pb-3 d-flex flex-row justify-content-between border-bottom">
+      <div className="albums-header mt-4 pb-3 d-flex flex-row justify-content-between border-bottom">
         <span className="text-dark ms-3 fs-5">Albums</span>
         <span 
           className="empty-bin text-secondary me-5 hover-pointer"
