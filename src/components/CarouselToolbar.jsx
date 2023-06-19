@@ -6,12 +6,16 @@ import { deleteDoc, doc, updateDoc } from "firebase/firestore";
 import { ref, deleteObject } from "firebase/storage";
 import { useAuth } from "../contexts/AuthContext.jsx";
 import { deletePhoto, addPhoto, toggleFav } from "../Redux/photos.store.js";
-import { addPhotoToTrash, removePhotoFromTrash } from "../Redux/trashPhotos.store.js";
+import {
+  addPhotoToTrash,
+  removePhotoFromTrash,
+} from "../Redux/trashPhotos.store.js";
 import { useDispatch } from "react-redux";
 import { useLocation } from "react-router-dom";
 
 import ToolTip from "./secondary_components/ToolTip.jsx";
 import { getStateKey } from "../modules/processPhotos.js";
+import { addPhotoToFav, removePhotoFromFav } from "../Redux/favPhotos.store.js";
 
 const CarouselToolbar = ({ photoIndex }) => {
   let { pathname } = useLocation();
@@ -40,13 +44,13 @@ const CarouselToolbar = ({ photoIndex }) => {
     }
   };
 
-  const addToTrash = async (e,docId) => {
+  const addToTrash = async (e, docId) => {
     e.stopPropagation();
     const photoDocRef = doc(db, `Users/${currentUser.uid}/Photos`, docId);
     try {
       await updateDoc(photoDocRef, { isDeleted: true });
       dispatch(deletePhoto(docId));
-      dispatch(addPhotoToTrash(photo))
+      dispatch(addPhotoToTrash(photo));
     } catch (error) {
       console.error(
         "Couldn't update the document in the collection:",
@@ -55,27 +59,28 @@ const CarouselToolbar = ({ photoIndex }) => {
     }
   };
 
-  const handleRestore = async (e,docId)=>{
-    if(!docId) return;
+  const handleRestore = async (e, docId) => {
+    if (!docId) return;
     e.stopPropagation();
     const photoDocRef = doc(db, `Users/${currentUser.uid}/Photos`, docId);
     try {
       await updateDoc(photoDocRef, { isDeleted: false });
       dispatch(removePhotoFromTrash(docId));
-      dispatch(addPhoto(photo))
+      dispatch(addPhoto(photo));
     } catch (error) {
       console.error(
         "Couldn't update the document in the collection:",
         error.message
       );
     }
-  }
+  };
 
   const toggleFavourite = async (docId) => {
     const photoDocRef = doc(db, `Users/${currentUser.uid}/Photos`, docId);
     try {
       await updateDoc(photoDocRef, { isFavourite: !photo.isFavourite });
       dispatch(toggleFav(docId));
+      dispatch(photo.isFavourite ? removePhotoFromFav(docId) : addPhotoToFav(photo));
     } catch (error) {
       console.error(
         "Couldn't update the document in the collection:",
@@ -110,7 +115,7 @@ const CarouselToolbar = ({ photoIndex }) => {
         <span
           style={pathname !== "/home/bin" ? { display: "none" } : {}}
           className="delete-from-bin text-light mx-3 hover-pointer "
-          onClick={(e)=>handleDelete(e, photo.path, photo.id)}
+          onClick={(e) => handleDelete(e, photo.path, photo.id)}
         >
           <i className="mx-3 text-light fa-solid fa-trash"></i>
           Delete
@@ -141,7 +146,7 @@ const CarouselToolbar = ({ photoIndex }) => {
               (isFav ? " fa-solid" : " fa-regular")
             }
             onClick={() => {
-              toggleFavourite(photo.id);
+              toggleFavourite(photo.id, photo.isFavourite);
             }}
           ></i>
         </ToolTip>

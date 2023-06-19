@@ -8,14 +8,16 @@ import { combineReducers } from "@reduxjs/toolkit";
 import { Provider } from "react-redux";
 
 import photosReducer from "./Redux/photos.store";
+import favPhotosReducer from "./Redux/favPhotos.store";
 import trashPhotosReducer from "./Redux/trashPhotos.store";
 import profilePhotosReducer from "./Redux/profilePhoto.store";
 
 import App from "./App.jsx";
 
 let rootReducer = combineReducers({
-  photos: photosReducer,
   profilePhoto: profilePhotosReducer,
+  photos: photosReducer,
+  favourites : favPhotosReducer,
   bin: trashPhotosReducer
 });
 

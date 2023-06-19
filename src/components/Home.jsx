@@ -2,6 +2,7 @@ import { createContext, useEffect, useState } from "react";
 import { useAuth } from "../contexts/AuthContext.jsx";
 import { useDispatch, useSelector } from "react-redux";
 import { setPhotos } from "../Redux/photos.store.js";
+import { setFavPhotos } from "../Redux/favPhotos.store.js";
 import { setTrashPhotos } from "../Redux/trashPhotos.store.js";
 import { Routes, Route, useLocation } from "react-router-dom";
 import { getPhotoUrls } from "../modules/getPhotos.js";
@@ -30,7 +31,7 @@ const Home = () => {
   let photos = createPhotosArr(photos_from_redux.photos);
   let trashPhotos = createPhotosArr(photos_from_redux.bin);
   let archivedPhotos = createPhotosArr(photos_from_redux.archived);
-  let favPhotos = createPhotosArr(photos_from_redux.favourite);
+  let favPhotos = createPhotosArr(photos_from_redux.favourites);
 
   let getCarouselPhotos = () => {
     if (pathname === "/home/bin") {
@@ -52,6 +53,7 @@ const Home = () => {
       getPhotoUrls(currentUser).then((tempPhotosState) => {
         tempPhotosState = filterPhotosByPath(tempPhotosState, pathname);
         dispatch(setPhotos(tempPhotosState.photos));
+        dispatch(setFavPhotos(tempPhotosState.favourites));
         dispatch(setTrashPhotos(tempPhotosState.bin));
       });
     }
