@@ -74,7 +74,7 @@ const Aside = ({pathname}) => {
             className={activeTab === "/home/archive" ? "active-aside-tab" : ""}
             onClick={() => setActiveTab("/home/archive")}
           >
-            <Link to="/home/archive">
+            <Link to="/home/archived">
               <i className="fa-solid fa-file-arrow-down me-4"></i>
               <span>Archive</span>
             </Link>

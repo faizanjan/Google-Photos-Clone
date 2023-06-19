@@ -10,6 +10,7 @@ import { Provider } from "react-redux";
 import photosReducer from "./Redux/photos.store";
 import favPhotosReducer from "./Redux/favPhotos.store";
 import trashPhotosReducer from "./Redux/trashPhotos.store";
+import archivePhotosReducer from "./Redux/archivePhotos.store";
 import profilePhotosReducer from "./Redux/profilePhoto.store";
 
 import App from "./App.jsx";
@@ -18,7 +19,8 @@ let rootReducer = combineReducers({
   profilePhoto: profilePhotosReducer,
   photos: photosReducer,
   favourites : favPhotosReducer,
-  bin: trashPhotosReducer
+  bin: trashPhotosReducer,
+  archived : archivePhotosReducer
 });
 
 const store = configureStore({

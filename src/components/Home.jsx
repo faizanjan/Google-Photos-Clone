@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setPhotos } from "../Redux/photos.store.js";
 import { setFavPhotos } from "../Redux/favPhotos.store.js";
 import { setTrashPhotos } from "../Redux/trashPhotos.store.js";
+import { setArchivePhotos } from "../Redux/archivePhotos.store.js";
 import { Routes, Route, useLocation } from "react-router-dom";
 import { getPhotoUrls } from "../modules/getPhotos.js";
 import {
@@ -38,7 +39,7 @@ const Home = () => {
   let getCarouselPhotos = () => {
     if (pathname === "/home/bin") {
       return trashPhotos;
-    } else if (pathname === "/home/archive") {
+    } else if (pathname === "/home/archived") {
       return archivedPhotos;
     } else if (pathname === "/home/favourites") {
       return favPhotos;
@@ -56,6 +57,7 @@ const Home = () => {
         tempPhotosState = filterPhotosByPath(tempPhotosState, pathname);
         dispatch(setPhotos(tempPhotosState.photos));
         dispatch(setFavPhotos(tempPhotosState.favourites));
+        dispatch(setArchivePhotos(tempPhotosState.archived));
         dispatch(setTrashPhotos(tempPhotosState.bin));
       });
     }
@@ -79,9 +81,10 @@ const Home = () => {
             />
             <Route path="albums" element={<ComingSoon />} />
             <Route path="utilities" element={<ComingSoon />} />
-            <Route path="archive" element={<Archive photos={archivedPhotos} />} />
+            <Route path="archived" element={<Archive photos={archivedPhotos} />} />
             <Route path="bin" element={<Bin photos={trashPhotos} />} />
           </Routes>
+
           {showCarousel && (
             <PhotoCarousel
               photos={getCarouselPhotos()}

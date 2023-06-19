@@ -162,9 +162,7 @@ const CarouselToolbar = ({ photoIndex }) => {
             }}
           ></i>
         </ToolTip>
-        <ToolTip tooltip="More Options">
-          <MoreInfo />
-        </ToolTip>
+          <MoreInfo photo={photo} currentUser={currentUser}/>
       </div>
     </div>
   );
