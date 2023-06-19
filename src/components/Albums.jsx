@@ -1,10 +1,17 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useAuth } from "../contexts/AuthContext.jsx";
 
 import CreateAlbum from "./albumComponents/CreateAlbum";
+import { getAlbums } from "../modules/getAlbums";
 
 function Albums() {
+  const [showForm, setShowForm] = useState(false);
+  let { currentUser } = useAuth();
 
-    const [showForm, setShowForm] = useState(false);
+  useEffect(()=>{
+    if(currentUser)getAlbums(currentUser);
+  },[currentUser])
+  
   return (
     <div
       className="albums-container ms-2"
@@ -16,17 +23,16 @@ function Albums() {
     >
       <div className="albums-header mt-4 pb-3 d-flex flex-row justify-content-between border-bottom">
         <span className="text-dark ms-3 fs-5">Albums</span>
-        <span 
+        <span
           className="empty-bin text-secondary me-5 hover-pointer"
-          onClick={()=>setShowForm(true)}
-          >
+          onClick={() => setShowForm(true)}
+        >
           <i className="fa-regular fa-square-plus text-secondary me-3"></i>
           Add Album
         </span>
       </div>
 
-      {showForm && <CreateAlbum setShowForm={setShowForm}/> }
-
+      {showForm && <CreateAlbum setShowForm={setShowForm} />}
     </div>
   );
 }
