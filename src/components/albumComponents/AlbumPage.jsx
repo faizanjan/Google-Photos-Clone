@@ -7,10 +7,13 @@ import { useDispatch } from "react-redux";
 import { updateAlbumName } from "../../Redux/albums.store";
 
 import AlbumPhoto from "./AlbumPhoto";
+import AlbumCarousel from "./AlbumCarousel.jsx";
 
 const AlbumPage = ({ albumId, setShowAlbumPage }) => {
   const album = useSelector((state) => state.albums[albumId]);
   const [albumName, setAlbumName] = useState(album.albumName);
+  let [showCarousel, setShowCarousel] = useState(false);
+  let [activeIndex, setActiveIndex] = useState(0);
   let { currentUser } = useAuth();
   let dispatch = useDispatch();
 
@@ -29,6 +32,7 @@ const AlbumPage = ({ albumId, setShowAlbumPage }) => {
     }
   };
 
+  let photos = album.photos.map((photo, index) => ({ ...photo, index }));
   return (
     <>
       <div style={{ position: "relative" }}>
@@ -67,12 +71,27 @@ const AlbumPage = ({ albumId, setShowAlbumPage }) => {
               onBlur={handleChangeName}
             />
             <div className="album-photos-grid d-flex flex-row flex-wrap justify-content-start m-5 px-5">
-              {album.photos.map((photo) => (
-                <AlbumPhoto key={photo.id} photo={photo} />
+              {album.photos.map((photo, index) => (
+                <AlbumPhoto
+                  key={photo.id}
+                  photo={photo}
+                  photoIndex={index}
+                  setShowCarousel={setShowCarousel}
+                  setActiveIndex={setActiveIndex}
+                />
               ))}
             </div>
           </form>
         </div>
+
+        {showCarousel && (
+          <AlbumCarousel
+            photos={photos}
+            setShowCarousel={setShowCarousel}
+            activeIndex={activeIndex}
+            setActiveIndex={setActiveIndex}
+          />
+        )}
       </div>
     </>
   );
