@@ -13,7 +13,6 @@ function Albums() {
   let dispatch = useDispatch();
   let albums = useSelector((state) => state.albums);
 
-  console.log(albums);
   useEffect(() => {
     if (currentUser)
       getAlbums(currentUser).then((albumsState) => {
@@ -45,7 +44,7 @@ function Albums() {
 
       <div className="albums-grid d-flex flex-row mt-3 ">
         {Object.values(albums).map((album) => (
-          <AlbumCard key={album.albunId} album={album} />
+          <AlbumCard key={album.albumId} album={album} />
         ))}
       </div>
     </div>
