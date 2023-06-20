@@ -41,7 +41,8 @@ const AlbumPage = ({ albumId, setShowAlbumPage }) => {
             right: 0,
             left: 0,
             height: "100vh",
-            zIndex: "100",
+            overflowY: "scroll",
+            zIndex: "10",
           }}
         >
           <div className="create-album-toolbar py-3">
@@ -53,7 +54,10 @@ const AlbumPage = ({ albumId, setShowAlbumPage }) => {
             ></i>
           </div>
 
-          <form className="add-album-form d-flex flex-column align-items-center ">
+          <form
+            style={{ position: "relative", zIndex: "40" }}
+            className="add-album-form d-flex flex-column align-items-center "
+          >
             <input
               id="album-name"
               className="bg-light ps-5 mx-auto my-5"
@@ -62,13 +66,13 @@ const AlbumPage = ({ albumId, setShowAlbumPage }) => {
               onChange={(e) => setAlbumName(e.target.value)}
               onBlur={handleChangeName}
             />
+            <div className="album-photos-grid d-flex flex-row flex-wrap justify-content-start m-5 px-5">
+              {album.photos.map((photo) => (
+                <AlbumPhoto key={photo.id} photo={photo} />
+              ))}
+            </div>
           </form>
         </div>
-      </div>
-      <div className="album-photos-grid d-flex flex-row mt-5 justify-content-start position-absolute">
-        {album.photos.map((photo) => (
-          <AlbumPhoto key={photo.id} photo={photo} />
-        ))}
       </div>
     </>
   );

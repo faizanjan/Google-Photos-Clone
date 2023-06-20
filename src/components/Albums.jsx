@@ -26,6 +26,7 @@ function Albums() {
       style={{
         position: "relative",
         overflowY: "scroll",
+        height: '100vh',
         width: "100%",
       }}
     >
