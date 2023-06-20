@@ -49,6 +49,7 @@ const CreateAlbum = ({ setShowForm }) => {
         right: 0,
         left: 0,
         height: "100vh",
+        zIndex:100
       }}
     >
       <div className="create-album-toolbar py-3">
