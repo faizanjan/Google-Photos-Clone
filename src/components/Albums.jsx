@@ -12,7 +12,7 @@ function Albums() {
   let { currentUser } = useAuth();
   let dispatch = useDispatch();
   let albums = useSelector((state) => state.albums);
-
+  
   useEffect(() => {
     if (currentUser)
       getAlbums(currentUser).then((albumsState) => {

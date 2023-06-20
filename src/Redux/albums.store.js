@@ -9,7 +9,7 @@ let albumSlice = createSlice({
     },
     addAlbum: (state, action) => {
         let newAlbum = action.payload;
-        return {...state, albumId: newAlbum.albumId }
+        state[newAlbum.albumId]= newAlbum;
     },
     deleteAlbum: (state, action) => {
         let newState = Object.keys(state).reduce((acc,albumId)=>{

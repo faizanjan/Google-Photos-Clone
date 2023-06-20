@@ -17,6 +17,10 @@ const CreateAlbum = ({ setShowForm }) => {
   let dispatch = useDispatch();
 
   const handleNewAlbum = async () => {
+    if(selectedPhotos.length===0){
+      alert("Album can't be empty");
+      return;
+    }
     const usersCollection = collection(db, "Users");
 
     const albumsCollection = collection(
@@ -34,18 +38,19 @@ const CreateAlbum = ({ setShowForm }) => {
       `${titleRef.current.value} Photos`
     );
 
-    let newPhotoDocs = await Promise.all(selectedPhotos.map(async (photo) => {
+    let newAlbum = {
+      albumId:res.id,
+      albumName: titleRef.current.value,
+      photos: []
+    }
+
+    await Promise.all(selectedPhotos.map(async (photo) => {
+      newAlbum.photos.push({id:photo.id, url: photo.url, })
       return await addDoc(thisAlbumCollection, photo);
     }));
 
-    let newAlbum = {
-      albumId:res.id,
-      name: titleRef.current.value,
-      photos: selectedPhotos
-    }
-
-    dispatch(addAlbum(newAlbum))
-    console.log(newPhotoDocs);
+    dispatch(addAlbum(newAlbum));
+    setShowForm(false);
   };
 
   return (
@@ -105,6 +110,7 @@ const CreateAlbum = ({ setShowForm }) => {
               setShowPhotoSelection={setShowPhotoSelection}
               handleNewAlbum={handleNewAlbum}
               setSelectedPhotos={setSelectedPhotos}
+              setShowForm={setShowForm}
             />
           )}
         </SelectionContext.Provider>
