@@ -2,11 +2,6 @@ import { useRef, useState, createContext } from "react";
 import { useAuth } from "../../contexts/AuthContext";
 import { collection, addDoc } from "firebase/firestore";
 import { db } from "../../firebase/firebase.config.js";
-import { Link, useNavigate } from "react-router-dom";
-import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import { setProfilePhotos } from "../../Redux/profilePhoto.store";
-import { Box, TextField, Alert, Button } from "@mui/material";
-import { useDispatch } from "react-redux";
 import SelectPhotos from "./SelectAlbumPhotos";
 
 export let SelectionContext = createContext();
