@@ -27,56 +27,58 @@ function SignIn() {
   };
 
   return (
-    <div
-      id="sign-in-container"
-      className="shadow border p-5 d-flex flex-column align-items-center"
-    >
-      {error && <Alert severity="error">{error}</Alert>}
-      <div className="ms-2 my-3 d-flex flex-row align-items-center">
-        <img
-          src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Google_2015_logo.svg/2560px-Google_2015_logo.svg.png"
-          alt="logo"
-          style={{ height: "35px" }}
-          className="img img-fluid"
-        />
-        <h5 className="ms-1 mb-0 text-muted fw-normal">Photos</h5>
-      </div>
-      <Box
-        className="my-4 px-5"
-        component="form"
-        sx={{
-          "& > :not(style)": { m: 1, width: "35ch" },
-        }}
-        autoComplete="on"
-        onSubmit={handleSignIn}
+    <div className="vh-100 vw-100 d-flex justify-content-center align-items-center">
+      <div
+        id="sign-in-container"
+        className="shadow border p-5 d-flex flex-column align-items-center"
       >
-        <TextField
-          id="sign-in-email"
-          label="Email"
-          type="email"
-          variant="outlined"
-          inputRef={emailRef}
-          required
-        />
-        <TextField
-          id="sign-in-password"
-          label="Password"
-          type="password"
-          autoComplete="current-password"
-          inputRef={passwordRef}
-          required
-        />
+        {error && <Alert severity="error">{error}</Alert>}
+        <div className="ms-2 my-3 d-flex flex-row align-items-center">
+          <img
+            src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Google_2015_logo.svg/2560px-Google_2015_logo.svg.png"
+            alt="logo"
+            style={{ height: "35px" }}
+            className="img img-fluid"
+          />
+          <h5 className="ms-1 mb-0 text-muted fw-normal">Photos</h5>
+        </div>
+        <Box
+          className="my-4 px-5"
+          component="form"
+          sx={{
+            "& > :not(style)": { m: 1, width: "35ch" },
+          }}
+          autoComplete="on"
+          onSubmit={handleSignIn}
+        >
+          <TextField
+            id="sign-in-email"
+            label="Email"
+            type="email"
+            variant="outlined"
+            inputRef={emailRef}
+            required
+          />
+          <TextField
+            id="sign-in-password"
+            label="Password"
+            type="password"
+            autoComplete="current-password"
+            inputRef={passwordRef}
+            required
+          />
 
-        <Button type="submit" variant="outlined">
-          SIGN IN
-        </Button>
-      </Box>
-      <span className="text-muted">
-        Need an account?
-        <Link to="/signup" className="ms-3">
-          Sign Up
-        </Link>
-      </span>
+          <Button type="submit" variant="outlined">
+            SIGN IN
+          </Button>
+        </Box>
+        <span className="text-muted">
+          Need an account?
+          <Link to="/signup" className="ms-3">
+            Sign Up
+          </Link>
+        </span>
+      </div>
     </div>
   );
 }

@@ -84,120 +84,122 @@ function SignUp() {
   };
 
   return (
-    <div
-      id="sign-up-container"
-      className="shadow border p-5 d-flex flex-column align-items-center"
-    >
-      {error && <Alert severity="error">{error}</Alert>}
-      <div className="ms-2 my-3 d-flex flex-row align-items-center">
-        <img
-          src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Google_2015_logo.svg/2560px-Google_2015_logo.svg.png"
-          alt="logo"
-          style={{ height: "35px" }}
-          className="img img-fluid"
-        />
-        <h5 className="ms-1 mb-0 text-muted fw-normal">Photos</h5>
-      </div>
-      <Box
-        className="my-4"
-        component="form"
-        sx={{
-          "& > :not(style)": { m: 1, width: "35ch" },
-        }}
-        autoComplete="on"
-        onSubmit={(e) => handleSignUp(e)}
+    <div className="vh-100 vw-100 d-flex justify-content-center align-items-center">
+      <div
+        id="sign-up-container"
+        className="shadow border p-5 d-flex flex-column align-items-center"
       >
-        <input
-          type="file"
-          name="profile-picture"
-          id="profile-picture"
-          onChange={handleFileChange}
-          className="d-none"
-          ref={dpRef}
-          required
-        />
-        <label htmlFor="profile-picture">
-          <div
-            className="mx-auto position-relative"
-            id="dp"
-            style={{
-              width: "100px",
-              height: "100px",
-              borderRadius: "50%",
-              overflow: "hidden",
-            }}
-          >
-            <img
-              className="img-fluid"
-              style={{
-                objectFit: "cover",
-                width: "100%",
-                height: "100%",
-                cursor: "pointer",
-              }}
-              src={
-                selectedPhoto ||
-                "https://www.dgvaishnavcollege.edu.in/dgvaishnav-c/uploads/2021/01/dummy-profile-pic.jpg"
-              }
-              alt=""
-            />
+        {error && <Alert severity="error">{error}</Alert>}
+        <div className="ms-2 my-3 d-flex flex-row align-items-center">
+          <img
+            src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Google_2015_logo.svg/2560px-Google_2015_logo.svg.png"
+            alt="logo"
+            style={{ height: "35px" }}
+            className="img img-fluid"
+          />
+          <h5 className="ms-1 mb-0 text-muted fw-normal">Photos</h5>
+        </div>
+        <Box
+          className="my-4"
+          component="form"
+          sx={{
+            "& > :not(style)": { m: 1, width: "35ch" },
+          }}
+          autoComplete="on"
+          onSubmit={(e) => handleSignUp(e)}
+        >
+          <input
+            type="file"
+            name="profile-picture"
+            id="profile-picture"
+            onChange={handleFileChange}
+            className="d-none"
+            ref={dpRef}
+            required
+          />
+          <label htmlFor="profile-picture">
             <div
-              style={{ position: "absolute", bottom: "10px", right: "10px" }}
+              className="mx-auto position-relative"
+              id="dp"
+              style={{
+                width: "100px",
+                height: "100px",
+                borderRadius: "50%",
+                overflow: "hidden",
+              }}
             >
-              <i
-                className="fas fa-camera"
+              <img
+                className="img-fluid"
                 style={{
-                  color: "#fff",
-                  backgroundColor: "#000",
-                  borderRadius: "50%",
-                  padding: "5px",
+                  objectFit: "cover",
+                  width: "100%",
+                  height: "100%",
+                  cursor: "pointer",
                 }}
-              ></i>
+                src={
+                  selectedPhoto ||
+                  "https://www.dgvaishnavcollege.edu.in/dgvaishnav-c/uploads/2021/01/dummy-profile-pic.jpg"
+                }
+                alt=""
+              />
+              <div
+                style={{ position: "absolute", bottom: "10px", right: "10px" }}
+              >
+                <i
+                  className="fas fa-camera"
+                  style={{
+                    color: "#fff",
+                    backgroundColor: "#000",
+                    borderRadius: "50%",
+                    padding: "5px",
+                  }}
+                ></i>
+              </div>
             </div>
-          </div>
-        </label>
+          </label>
 
-        <TextField
-          id="sign-up-name"
-          label="Name"
-          variant="outlined"
-          inputRef={nameRef}
-          required
-        />
-        <TextField
-          id="sign-up-email"
-          label="Email"
-          type="email"
-          variant="outlined"
-          inputRef={emailRef}
-          required
-        />
-        <TextField
-          id="sign-up-password"
-          label="Password"
-          type="password"
-          autoComplete="current-password"
-          inputRef={passwordRef}
-          required
-        />
-        <TextField
-          id="sign-up-repeat-password"
-          label="Repeat Password"
-          type="password"
-          autoComplete="current-password"
-          inputRef={repeatPasswordRef}
-          required
-        />
-        <Button type="submit" variant="outlined">
-          SIGN UP
-        </Button>
-      </Box>
-      <span className="text-muted">
-        Already have an account?
-        <Link to="/signin" className="ms-3">
-          Sign In
-        </Link>
-      </span>
+          <TextField
+            id="sign-up-name"
+            label="Name"
+            variant="outlined"
+            inputRef={nameRef}
+            required
+          />
+          <TextField
+            id="sign-up-email"
+            label="Email"
+            type="email"
+            variant="outlined"
+            inputRef={emailRef}
+            required
+          />
+          <TextField
+            id="sign-up-password"
+            label="Password"
+            type="password"
+            autoComplete="current-password"
+            inputRef={passwordRef}
+            required
+          />
+          <TextField
+            id="sign-up-repeat-password"
+            label="Repeat Password"
+            type="password"
+            autoComplete="current-password"
+            inputRef={repeatPasswordRef}
+            required
+          />
+          <Button type="submit" variant="outlined">
+            SIGN UP
+          </Button>
+        </Box>
+        <span className="text-muted">
+          Already have an account?
+          <Link to="/signin" className="ms-3">
+            Sign In
+          </Link>
+        </span>
+      </div>
     </div>
   );
 }
