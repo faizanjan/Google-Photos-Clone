@@ -22,7 +22,7 @@ export async function getAlbums(currentUser) {
     const albumCollection = collection(
       albumsCollection,
       albumObj.albumId,
-      `${albumObj.albumName} Photos`
+      "Album Photos"
     );
     const albumPhotoDocs = await getDocs(albumCollection);
     const albumPhotoObjs = albumPhotoDocs.docs.map((doc) => ({
