@@ -168,7 +168,7 @@ const CarouselToolbar = ({ photoIndex, setActiveIndex, lastIndex }) => {
             }}
           ></i>
         </ToolTip>
-        <MoreInfo photo={photo} currentUser={currentUser} />
+        {pathname !== "/home/bin" && <MoreInfo photo={photo} currentUser={currentUser} />}
       </div>
     </div>
   );
