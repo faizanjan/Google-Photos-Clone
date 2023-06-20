@@ -131,7 +131,7 @@ li.active-aside-tab:hover {
 
 /* Albums */
 
-#new-album-name {
+#new-album-name, #album-name {
   font-size: 3rem !important;
   border: none;
   transition: all 0.2s;
@@ -141,9 +141,13 @@ li.active-aside-tab:hover {
 #new-album-name:hover {
   border-bottom: 1px solid gray;
 }
-#new-album-name:focus {
+#new-album-name:focus, #album-name:focus {
   border: none !important;
   border-bottom: 2px solid rgb(26, 115, 232) !important;
+}
+
+#album-name{
+  border-bottom: 1px solid gray;
 }
 
 #select-album-photos-btn {
