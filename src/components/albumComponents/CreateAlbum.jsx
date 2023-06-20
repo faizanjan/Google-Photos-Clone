@@ -5,6 +5,7 @@ import { db } from "../../firebase/firebase.config.js";
 import SelectPhotos from "./SelectAlbumPhotos";
 import { useDispatch } from "react-redux";
 import { addAlbum } from "../../Redux/albums.store";
+import { createNewAlbum } from "../../modules/createAlbum";
 
 export let SelectionContext = createContext();
 
@@ -17,38 +18,11 @@ const CreateAlbum = ({ setShowForm }) => {
   let dispatch = useDispatch();
 
   const handleNewAlbum = async () => {
-    if(selectedPhotos.length===0){
-      alert("Album can't be empty");
-      return;
-    }
-    const usersCollection = collection(db, "Users");
-
-    const albumsCollection = collection(
-      usersCollection,
-      currentUser.uid,
-      "Albums"
+    let newAlbum = await createNewAlbum(
+      selectedPhotos,
+      currentUser,
+      titleRef.current.value
     );
-    let res = await addDoc(albumsCollection, {
-      albumName: titleRef.current.value || "",
-    });
-
-    const thisAlbumCollection = collection(
-      albumsCollection,
-      res.id,
-      `${titleRef.current.value} Photos`
-    );
-
-    let newAlbum = {
-      albumId:res.id,
-      albumName: titleRef.current.value,
-      photos: []
-    }
-
-    await Promise.all(selectedPhotos.map(async (photo) => {
-      newAlbum.photos.push({id:photo.id, url: photo.url, })
-      return await addDoc(thisAlbumCollection, photo);
-    }));
-
     dispatch(addAlbum(newAlbum));
     setShowForm(false);
   };
@@ -63,7 +37,7 @@ const CreateAlbum = ({ setShowForm }) => {
         right: 0,
         left: 0,
         height: "100vh",
-        zIndex:100
+        zIndex: 100,
       }}
     >
       <div className="create-album-toolbar py-3">
