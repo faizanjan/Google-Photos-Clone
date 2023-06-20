@@ -49,7 +49,7 @@ function AlbumCarousel({
       ref={divRef}
     >
       <CarouselToolbar
-        photoIndex={activeIndex}
+        photoId={photos[activeIndex].id}
         setActiveIndex={setActiveIndex}
         lastIndex={photos.length - 1}
         setShowCarousel={setShowCarousel}
