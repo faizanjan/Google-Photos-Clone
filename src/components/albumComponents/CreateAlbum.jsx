@@ -3,6 +3,8 @@ import { useAuth } from "../../contexts/AuthContext";
 import { collection, addDoc } from "firebase/firestore";
 import { db } from "../../firebase/firebase.config.js";
 import SelectPhotos from "./SelectAlbumPhotos";
+import { useDispatch } from "react-redux";
+import { addAlbum } from "../../Redux/albums.store";
 
 export let SelectionContext = createContext();
 
@@ -12,9 +14,9 @@ const CreateAlbum = ({ setShowForm }) => {
   let [selectedPhotos, setSelectedPhotos] = useState([]);
 
   let { currentUser } = useAuth();
+  let dispatch = useDispatch();
 
-  const handleNewAlbum = async (e) => {
-    e.preventDefault();
+  const handleNewAlbum = async () => {
     const usersCollection = collection(db, "Users");
 
     const albumsCollection = collection(
@@ -32,10 +34,17 @@ const CreateAlbum = ({ setShowForm }) => {
       `${titleRef.current.value} Photos`
     );
 
-    let newPhotoDocs = selectedPhotos.map(async (photo) => {
+    let newPhotoDocs = await Promise.all(selectedPhotos.map(async (photo) => {
       return await addDoc(thisAlbumCollection, photo);
-    });
+    }));
 
+    let newAlbum = {
+      albumId:res.id,
+      name: titleRef.current.value,
+      photos: selectedPhotos
+    }
+
+    dispatch(addAlbum(newAlbum))
     console.log(newPhotoDocs);
   };
 

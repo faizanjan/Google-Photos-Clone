@@ -4,11 +4,23 @@ let albumSlice = createSlice({
   name: "albums",
   initialState: {},
   reducers: {
-    setAlbums: (state, action) => {
+    setAlbums: (_, action) => {
       return action.payload;
     },
-    addAlbum: (state, action) => {},
-    deleteAlbum: (state, action) => {},
+    addAlbum: (state, action) => {
+        let newAlbum = action.payload;
+        return {...state, albumId: newAlbum.albumId }
+    },
+    deleteAlbum: (state, action) => {
+        let newState = Object.keys(state).reduce((acc,albumId)=>{
+            if(albumId === action.payload) return acc;
+            else {
+                acc[albumId]=state[albumId];
+                return acc;
+            }
+        }, {})
+        return newState;
+    },
     setPhotosInAlbum: (state, action) => {},
     addPhotoToAlbum: (state, action) => {},
     deletePhotoFromAlbum: (state, action) => {},

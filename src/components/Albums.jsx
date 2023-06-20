@@ -44,7 +44,7 @@ function Albums() {
 
       <div className="albums-grid d-flex flex-row mt-3 ">
         {Object.values(albums).map((album) => (
-          <AlbumCard key={album.albumId} album={album} />
+          <AlbumCard key={album.albumId} albumId={album.albumId} />
         ))}
       </div>
     </div>
