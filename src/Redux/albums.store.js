@@ -25,7 +25,16 @@ let albumSlice = createSlice({
       let { docId, albumName } = action.payload;
       state[docId].albumName = albumName;
     },
-    addPhotoToAlbum: (state, action) => {},
+    addPhotosToAlbum: (state, action) => {
+      const { albumId, newPhotosArr } = action.payload;
+      const album = state[albumId];
+    
+      state[albumId] = {
+        ...album,
+        photos: [...album.photos, ...newPhotosArr],
+      };
+    },
+    
     deletePhotoFromAlbum: (state, action) => {
       const { albumId, photoId } = action.payload;
       const album = state[albumId];
@@ -46,7 +55,7 @@ export const {
   addAlbum,
   deleteAlbum,
   updateAlbumName,
-  addPhotoToAlbum,
+  addPhotosToAlbum,
   deletePhotoFromAlbum,
 } = albumSlice.actions;
 

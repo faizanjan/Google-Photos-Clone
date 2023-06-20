@@ -4,7 +4,7 @@ import { db } from "../../firebase/firebase.config.js";
 import { doc, updateDoc } from "firebase/firestore";
 import { useAuth } from "../../contexts/AuthContext.jsx";
 import { useDispatch } from "react-redux";
-import { addPhotoToAlbum, updateAlbumName } from "../../Redux/albums.store";
+import { addPhotosToAlbum, updateAlbumName } from "../../Redux/albums.store";
 import { addPhotosToAlbum as addNewPhotos } from "../../modules/addPhotosToAlbum.js";
 import AlbumPhoto from "./AlbumPhoto";
 import AlbumCarousel from "./AlbumCarousel.jsx";
@@ -39,10 +39,8 @@ const AlbumPage = ({ albumId, setShowAlbumPage, handleDeleteAlbum }) => {
   };
 
   const handleAddPhoto = async () => {
-    // console.log(newPhotos)
     let newPhotosArr = await addNewPhotos(currentUser, albumId, newPhotos)
-    console.log();(newPhotosArr)
-    
+    dispatch(addPhotosToAlbum({newPhotosArr, albumId}));
   };
 
   let photos = album.photos.map((photo, index) => ({ ...photo, index }));
