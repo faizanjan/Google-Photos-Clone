@@ -80,6 +80,7 @@ const AlbumCard = ({ albumId }) => {
         <AlbumPage
           albumId={album.albumId}
           setShowAlbumPage={setShowAlbumPage}
+          handleDeleteAlbum={handleDeleteAlbum}
         />
       )}
 

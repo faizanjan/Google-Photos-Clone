@@ -1,16 +1,28 @@
 import React, { useContext, useRef } from "react";
 import { SelectionContext } from "./CreateAlbum";
+import { AddPhotosToAlbum } from "./AlbumPage";
 
 const PhotoCheckbox = ({ photo }) => {
   let photoRef = useRef();
   let setSelectedPhotos = useContext(SelectionContext);
+  let setNewPhotos = useContext(AddPhotosToAlbum);
   const addOrRemoveFromSelectedPhotos = () => {
-    if (photoRef.current.checked) {
-      setSelectedPhotos((prevState) => [...prevState, photo]);
-    } else {
-      setSelectedPhotos((prevState) =>
-        prevState.filter((selectedPhoto) => selectedPhoto.id !== photo.id)
-      );
+    if (setSelectedPhotos) {
+      if (photoRef.current.checked) {
+        setSelectedPhotos((prevState) => [...prevState, photo]);
+      } else {
+        setSelectedPhotos((prevState) =>
+          prevState.filter((selectedPhoto) => selectedPhoto.id !== photo.id)
+        );
+      }
+    } else if (setNewPhotos) {
+      if (photoRef.current.checked) {
+        setNewPhotos((prevState) => [...prevState, photo]);
+      } else {
+        setNewPhotos((prevState) =>
+          prevState.filter((selectedPhoto) => selectedPhoto.id !== photo.id)
+        );
+      }
     }
   };
 

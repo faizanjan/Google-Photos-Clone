@@ -1,17 +1,23 @@
-import { useState } from "react";
+import { useState, createContext } from "react";
 import { useSelector } from "react-redux";
 import { db } from "../../firebase/firebase.config.js";
 import { doc, updateDoc } from "firebase/firestore";
 import { useAuth } from "../../contexts/AuthContext.jsx";
 import { useDispatch } from "react-redux";
-import { updateAlbumName } from "../../Redux/albums.store";
-
+import { addPhotoToAlbum, updateAlbumName } from "../../Redux/albums.store";
+import { addPhotosToAlbum as addNewPhotos } from "../../modules/addPhotosToAlbum.js";
 import AlbumPhoto from "./AlbumPhoto";
 import AlbumCarousel from "./AlbumCarousel.jsx";
+import ToolTip from "../secondary_components/ToolTip.jsx";
+import SelectPhotos from "./SelectAlbumPhotos.jsx";
 
-const AlbumPage = ({ albumId, setShowAlbumPage }) => {
-  const album = useSelector((state) => state.albums[albumId]);
-  const [albumName, setAlbumName] = useState(album.albumName);
+export let AddPhotosToAlbum = createContext();
+
+const AlbumPage = ({ albumId, setShowAlbumPage, handleDeleteAlbum }) => {
+  let album = useSelector((state) => state.albums[albumId]);
+  let [albumName, setAlbumName] = useState(album.albumName);
+  let [showPhotoSelection, setShowPhotoSelection] = useState(false);
+  let [newPhotos, setNewPhotos] = useState([]);
   let [showCarousel, setShowCarousel] = useState(false);
   let [activeIndex, setActiveIndex] = useState(0);
   let { currentUser } = useAuth();
@@ -32,6 +38,13 @@ const AlbumPage = ({ albumId, setShowAlbumPage }) => {
     }
   };
 
+  const handleAddPhoto = async () => {
+    // console.log(newPhotos)
+    let newPhotosArr = await addNewPhotos(currentUser, albumId, newPhotos)
+    console.log();(newPhotosArr)
+    
+  };
+
   let photos = album.photos.map((photo, index) => ({ ...photo, index }));
   return (
     <>
@@ -49,13 +62,29 @@ const AlbumPage = ({ albumId, setShowAlbumPage }) => {
             zIndex: "10",
           }}
         >
-          <div className="create-album-toolbar py-3">
+          <div className="create-album-toolbar py-3 d-flex flex-row justify-content-between">
             <i
               className="fa-solid fa-arrow-left text-secondary fs-3 ms-4 hover-pointer"
               onClick={(e) => {
                 setShowAlbumPage(false);
               }}
             ></i>
+
+            <div className="tools me-5">
+              <ToolTip tooltip="Add photo">
+                <i
+                  className="fa-regular fa-square-plus text-secondary fs-5 mx-4 hover-pointer"
+                  onClick={()=>setShowPhotoSelection(true)}
+                ></i>
+              </ToolTip>
+
+              <ToolTip tooltip="Delete Album">
+                <i
+                  className="fa-solid fa-trash text-secondary fs-5 mx-4 hover-pointer"
+                  onClick={handleDeleteAlbum}
+                ></i>
+              </ToolTip>
+            </div>
           </div>
 
           <form
@@ -93,6 +122,16 @@ const AlbumPage = ({ albumId, setShowAlbumPage }) => {
             albumId={albumId}
           />
         )}
+
+        <AddPhotosToAlbum.Provider value={setNewPhotos}>
+          {showPhotoSelection && (
+            <SelectPhotos
+              setShowPhotoSelection={setShowPhotoSelection}
+              handleNewAlbum={handleAddPhoto}
+              setSelectedPhotos={setNewPhotos}
+            />
+          )}
+        </AddPhotosToAlbum.Provider>
       </div>
     </>
   );
