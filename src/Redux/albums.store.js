@@ -21,6 +21,10 @@ let albumSlice = createSlice({
         }, {})
         return newState;
     },
+    updateAlbumName:(state, action)=>{
+      let {docId, albumName} = action.payload;
+      state[docId].albumName=albumName;
+    },
     setPhotosInAlbum: (state, action) => {},
     addPhotoToAlbum: (state, action) => {},
     deletePhotoFromAlbum: (state, action) => {},
@@ -31,6 +35,7 @@ export const {
   setAlbums,
   addAlbum,
   deleteAlbum,
+  updateAlbumName,
   setPhotosInAlbum,
   addPhotoToAlbum,
   deletePhotoFromAlbum,

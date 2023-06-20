@@ -65,7 +65,7 @@ const AlbumCard = ({ albumId }) => {
         </div>
       </div>
 
-      {showAlbumPage && <AlbumPage album={album} setShowAlbumPage={setShowAlbumPage}/>}
+      {showAlbumPage && <AlbumPage albumId={album.albumId} setShowAlbumPage={setShowAlbumPage}/>}
     </>
   );
 };

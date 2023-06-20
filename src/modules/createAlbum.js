@@ -24,7 +24,7 @@ export const createNewAlbum = async (
   const thisAlbumCollection = collection(
     albumsCollection,
     res.id,
-    `${albumName} Photos`
+    `Album Photos`
   );
 
   let newAlbum = {
