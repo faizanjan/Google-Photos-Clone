@@ -1,11 +1,12 @@
-import AlbumPhoto from "./AlbumPhoto";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import { db } from "../../firebase/firebase.config.js";
 import { doc, updateDoc } from "firebase/firestore";
 import { useAuth } from "../../contexts/AuthContext.jsx";
 import { useDispatch } from "react-redux";
-import {updateAlbumName} from '../../Redux/albums.store';
+import { updateAlbumName } from "../../Redux/albums.store";
+
+import AlbumPhoto from "./AlbumPhoto";
 
 const AlbumPage = ({ albumId, setShowAlbumPage }) => {
   const album = useSelector((state) => state.albums[albumId]);
@@ -19,7 +20,7 @@ const AlbumPage = ({ albumId, setShowAlbumPage }) => {
     const albumDocRef = doc(db, `Users/${currentUser.uid}/Albums`, docId);
     try {
       await updateDoc(albumDocRef, { albumName });
-      dispatch(updateAlbumName({docId, albumName}));
+      dispatch(updateAlbumName({ docId, albumName }));
     } catch (error) {
       console.error(
         "Couldn't update the document in the collection:",
