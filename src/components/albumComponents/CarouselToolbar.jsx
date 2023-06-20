@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { db } from "../../firebase/firebase.config.js";
-import { doc, updateDoc } from "firebase/firestore";
+import { doc, updateDoc, deleteDoc } from "firebase/firestore";
 import { useAuth } from "../../contexts/AuthContext.jsx";
 import { deletePhoto, toggleFav } from "../../Redux/photos.store.js";
 import { addPhotoToTrash } from "../../Redux/trashPhotos.store.js";
@@ -9,16 +9,21 @@ import {
   addPhotoToFav,
   removePhotoFromFav,
 } from "../../Redux/favPhotos.store.js";
-
+import { deletePhotoFromAlbum } from "../../Redux/albums.store.js";
 import ToolTip from "./../secondary_components/ToolTip.jsx";
 
 const CarouselToolbar = ({
   photoId,
+  idInAlbum,
+  activeIndex,
   setActiveIndex,
   lastIndex,
   setShowCarousel,
+  albumId,
 }) => {
-  let photo = useSelector(state=>state.photos.find(photo=>photo.id===photoId));
+  let photo = useSelector((state) =>
+    state.photos.find((photo) => photo.id === photoId)
+  );
 
   let { currentUser } = useAuth();
 
@@ -36,6 +41,7 @@ const CarouselToolbar = ({
     try {
       await updateDoc(photoDocRef, { isDeleted: true });
       if (photo.index === lastIndex) setActiveIndex(0);
+      removeFromAlbum(idInAlbum);
       dispatch(deletePhoto(docId));
       dispatch(addPhotoToTrash(photo));
     } catch (error) {
@@ -43,6 +49,22 @@ const CarouselToolbar = ({
         "Couldn't update the document in the collection:",
         error.message
       );
+    }
+  };
+
+  const removeFromAlbum = async (docId) => {
+    try {
+      let albumPhotoDoc = doc(
+        db,
+        `Users/${currentUser.uid}/Albums/${albumId}/Album Photos`,
+        docId
+      );
+      await deleteDoc(albumPhotoDoc);
+      if (activeIndex === lastIndex) setActiveIndex(0);
+
+      dispatch(deletePhotoFromAlbum({ albumId, photoId: docId }));
+    } catch (error) {
+      console.error("Couldn't delete the referenced item:", error.message);
     }
   };
 
@@ -102,6 +124,14 @@ const CarouselToolbar = ({
             className="mx-3 hover-pointer text-light fa-solid fa-trash-can"
             onClick={(e) => {
               addToTrash(e, photo.id);
+            }}
+          ></i>
+        </ToolTip>
+        <ToolTip tooltip="Remove from Album">
+          <i
+            className="mx-3 hover-pointer text-light fa-solid fa-folder-minus"
+            onClick={(e) => {
+              removeFromAlbum(idInAlbum);
             }}
           ></i>
         </ToolTip>

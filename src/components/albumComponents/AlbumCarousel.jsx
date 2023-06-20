@@ -6,6 +6,7 @@ import CarouselToolbar from "./CarouselToolbar";
 function AlbumCarousel({
   photos,
   activeIndex,
+  albumId,
   setActiveIndex,
   setShowCarousel,
 }) {
@@ -22,8 +23,7 @@ function AlbumCarousel({
   const handleKeyPress = (e) => {
     switch (e.key) {
       case "ArrowRight":
-        if (activeIndex !== photos.length - 1)
-          setActiveIndex(activeIndex + 1);
+        if (activeIndex !== photos.length - 1) setActiveIndex(activeIndex + 1);
         break;
       case "ArrowLeft":
         if (activeIndex !== 0) setActiveIndex(activeIndex - 1);
@@ -49,10 +49,13 @@ function AlbumCarousel({
       ref={divRef}
     >
       <CarouselToolbar
-        photoId={photos[activeIndex].id}
+        photoId={photos[activeIndex].photoId}
+        idInAlbum={photos[activeIndex].idInAlbum}
+        activeIndex={activeIndex}
         setActiveIndex={setActiveIndex}
         lastIndex={photos.length - 1}
         setShowCarousel={setShowCarousel}
+        albumId={albumId}
       />
 
       <Carousel
@@ -62,11 +65,11 @@ function AlbumCarousel({
       >
         {photos.map((photo) => {
           return (
-            <Carousel.Item key={photo.id}>
+            <Carousel.Item key={photo.photoId}>
               <img
                 className="d-block w-100"
                 src={photo.url}
-                alt={photo.id}
+                alt={photo.photoId}
                 style={{
                   height: "calc(100vh - 75px)",
                   width: "auto",

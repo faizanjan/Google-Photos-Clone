@@ -22,7 +22,7 @@ export async function getAlbums(currentUser) {
     const albumCollection = collection(
       albumsCollection,
       albumObj.albumId,
-      "Album Photos"
+      `Album Photos`
     );
     const albumPhotoDocs = await getDocs(albumCollection);
     const albumPhotoObjs = albumPhotoDocs.docs.map((doc) => ({
@@ -30,14 +30,11 @@ export async function getAlbums(currentUser) {
       albumPhotoId: doc.id,
     }));
 
-    const thisAlbumPhotos = [];
-
-    for (const obj of albumPhotoObjs) {
-      const photoRef = ref(storage, obj.path);
-      const { timeCreated } = await getMetadata(photoRef);
-      const url = await getDownloadURL(photoRef);
-      thisAlbumPhotos.push(createPhotoObj(obj, url, timeCreated));
-    }
+    const thisAlbumPhotos = albumPhotoObjs.map((obj) => ({
+      idInAlbum: obj.albumPhotoId,
+      photoId: obj.id,
+      url: obj.url,
+    }));
 
     albumsState[albumObj.albumId] = {
       photos: thisAlbumPhotos,
@@ -46,5 +43,5 @@ export async function getAlbums(currentUser) {
     };
   }
 
-  return(albumsState);
+  return albumsState;
 }

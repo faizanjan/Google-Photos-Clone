@@ -35,8 +35,8 @@ export const createNewAlbum = async (
 
   await Promise.all(
     selectedPhotos.map(async (photo) => {
-      newAlbum.photos.push({ id: photo.id, url: photo.url });
-      return await addDoc(thisAlbumCollection, photo);
+      let newDoc = await addDoc(thisAlbumCollection, photo);
+      newAlbum.photos.push({ idInAlbum: newDoc.id, photoId:photo.id, url: photo.url });
     })
   );
 

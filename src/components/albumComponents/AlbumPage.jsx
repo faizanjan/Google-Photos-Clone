@@ -73,7 +73,7 @@ const AlbumPage = ({ albumId, setShowAlbumPage }) => {
             <div className="album-photos-grid d-flex flex-row flex-wrap justify-content-start m-5 px-5">
               {album.photos.map((photo, index) => (
                 <AlbumPhoto
-                  key={photo.id}
+                  key={photo.photoId}
                   photo={photo}
                   photoIndex={index}
                   setShowCarousel={setShowCarousel}
@@ -90,6 +90,7 @@ const AlbumPage = ({ albumId, setShowAlbumPage }) => {
             setShowCarousel={setShowCarousel}
             activeIndex={activeIndex}
             setActiveIndex={setActiveIndex}
+            albumId={albumId}
           />
         )}
       </div>
