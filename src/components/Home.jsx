@@ -7,6 +7,9 @@ import { setTrashPhotos } from "../Redux/trashPhotos.store.js";
 import { setArchivePhotos } from "../Redux/archivePhotos.store.js";
 import { Routes, Route, useLocation } from "react-router-dom";
 import { getPhotoUrls } from "../modules/getPhotos.js";
+import { getAllUsers } from "../modules/getAllUsers";
+import { setAllUsers } from "../Redux/users.store";
+
 import {
   createPhotosArr,
   filterPhotosByPath,
@@ -62,6 +65,9 @@ const Home = () => {
         dispatch(setArchivePhotos(tempPhotosState.archived));
         dispatch(setTrashPhotos(tempPhotosState.bin));
       });
+      getAllUsers().then((allUsers) => {
+        dispatch(setAllUsers(allUsers));
+    });
     }
   }, [currentUser, pathname]);
 

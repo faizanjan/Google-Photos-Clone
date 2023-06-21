@@ -7,13 +7,6 @@ const Sharing = () => {
   const dispatch = useDispatch();
   const users = useSelector(state=>state.allUsers);
 
-  console.log(users)
-  useEffect(() => {
-    getAllUsers().then((allUsers) => {
-        dispatch(setAllUsers(allUsers));
-    });
-  }, []);
-
   return <div>
     {Object.values(users).map(user=>user.name)}
   </div>;
