@@ -38,8 +38,9 @@ const CarouselToolbar = ({ photoIndex, setActiveIndex, lastIndex }) => {
   
   if(!photo) return ;
   
-  const handleSharing = (friendsEmail)=>{
-    sharePhoto(friendsEmail, photo)
+  const handleSharing = (receipientId, receipientEmail)=>{
+    if(!receipientId) alert('User does not exist')
+    sharePhoto(receipientId, receipientEmail, currentUser, [photo])
   }
 
   const handleDelete = async (event, path, docId) => {
