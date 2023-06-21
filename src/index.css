@@ -131,7 +131,8 @@ li.active-aside-tab:hover {
 
 /* Albums */
 
-#new-album-name, #album-name {
+#new-album-name,
+#album-name {
   font-size: 3rem !important;
   border: none;
   transition: all 0.2s;
@@ -141,12 +142,13 @@ li.active-aside-tab:hover {
 #new-album-name:hover {
   border-bottom: 1px solid gray;
 }
-#new-album-name:focus, #album-name:focus {
+#new-album-name:focus,
+#album-name:focus {
   border: none !important;
   border-bottom: 2px solid rgb(26, 115, 232) !important;
 }
 
-#album-name{
+#album-name {
   border-bottom: 1px solid gray;
 }
 
@@ -177,4 +179,35 @@ li.active-aside-tab:hover {
   width: 20px;
   height: 20px;
   accent-color: rgba(8, 8, 191, 0);
+}
+
+/* Landing Page */
+
+@keyframes fade-in-down {
+  from {
+    opacity: 0;
+    transform: translateY(-150vh);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(200vh);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.brand-heading {
+  animation: fade-in-down 1s ease-in-out forwards;
+}
+
+.landing-page a {
+  animation: fade-in-up 1.5s ease-in-out forwards;
 }
