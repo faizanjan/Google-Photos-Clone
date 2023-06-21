@@ -14,7 +14,7 @@ import { useDispatch } from "react-redux";
 import { useLocation } from "react-router-dom";
 import { getStateKey } from "../modules/processPhotos.js";
 import { addPhotoToFav, removePhotoFromFav } from "../Redux/favPhotos.store.js";
-import { sharePhoto } from "../modules/sharePhoto.js";
+import { sharePhotos } from "../modules/sharePhotos.js";
 
 import ToolTip from "./secondary_components/ToolTip.jsx";
 import MoreInfo from "./secondary_components/MoreInfo.jsx";
@@ -40,7 +40,7 @@ const CarouselToolbar = ({ photoIndex, setActiveIndex, lastIndex }) => {
   
   const handleSharing = (receipientId, receipientEmail)=>{
     if(!receipientId) alert('User does not exist')
-    sharePhoto(receipientId, receipientEmail, currentUser, [photo])
+    sharePhotos(receipientId, receipientEmail, currentUser, [photo])
   }
 
   const handleDelete = async (event, path, docId) => {
