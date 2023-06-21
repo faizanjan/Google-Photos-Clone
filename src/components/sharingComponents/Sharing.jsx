@@ -3,11 +3,16 @@ import { useDispatch, useSelector } from "react-redux";
 import { getSharedPhotos } from "../../modules/getSharedPhotos";
 import { useAuth } from "../../contexts/AuthContext.jsx";
 import { setSharedPhotos } from "../../Redux/sharedPhotos.store";
+
 import SharingHeader from "./SharingHeader";
+import SharedPhoto from "./SharedPhoto";
+import SharingCarousel from "./SharingCarousel";
 
 const Sharing = () => {
   let shared = useSelector((state) => state.shared);
   let { receivedPhotos, sentPhotos } = shared;
+  let [showCarousel, setShowCarousel] = useState(false);
+  let [activeIndex, setActiveIndex] = useState(0);
 
   const dispatch = useDispatch();
   const { currentUser } = useAuth();
@@ -29,27 +34,31 @@ const Sharing = () => {
         <div className="received m-5">
           <div className="photo-grid d-flex flex-row flex-wrap">
             {photosToDisplay &&
-              photosToDisplay.map((photo) => {
+              photosToDisplay.map((photo, index) => {
                 return (
-                  <div
-                    className="photo-container d-flex flex-column position-relative mx-1"
-                    style={{ margin: "20px 0" }}
+                  <SharedPhoto
                     key={photo.id}
-                  >
-                    <img
-                      src={photo.url}
-                      style={{ height: "250px" }}
-                      alt="google photo"
-                    />
-                    <span className="from text-muted">
-                      {showSent ? "to: " + photo.to : "from: " + photo.from}
-                    </span>
-                  </div>
+                    photo={photo}
+                    index={index}
+                    showSent={showSent}
+                    showCarousel={()=>setShowCarousel(true)}
+                    setActiveIndex={setActiveIndex}
+                  />
                 );
               })}
           </div>
         </div>
       </div>
+
+      {showCarousel && (
+        <SharingCarousel
+          photos={photosToDisplay}
+          activeIndex={activeIndex}
+          setActiveIndex={setActiveIndex}
+          setShowCarousel={setShowCarousel}
+          showSent={showSent}
+        />
+      )}
     </>
   );
 };
