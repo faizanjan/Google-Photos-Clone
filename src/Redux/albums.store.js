@@ -29,12 +29,17 @@ let albumSlice = createSlice({
       const { albumId, newPhotosArr } = action.payload;
       const album = state[albumId];
     
-      state[albumId] = {
-        ...album,
-        photos: [...album.photos, ...newPhotosArr],
-      };
-    },
+      const existingPhotos = album.photos;
     
+      newPhotosArr.forEach(photo => {
+        const isExisting = existingPhotos.some(existingPhoto => existingPhoto.id === photo.id);
+        if (isExisting) {
+          alert(`Photo already exists in this album.`);
+        } else {
+          album.photos.push(photo);
+        }
+      });
+    },    
     deletePhotoFromAlbum: (state, action) => {
       const { albumId, photoId } = action.payload;
       const album = state[albumId];
