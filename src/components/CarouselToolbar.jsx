@@ -19,12 +19,13 @@ import { sharePhotos } from "../modules/sharePhotos.js";
 import ToolTip from "./secondary_components/ToolTip.jsx";
 import MoreInfo from "./secondary_components/MoreInfo.jsx";
 import SharingModal from "./sharingComponents/SharingModal.jsx";
+import AddToAlbumModal from "./albumComponents/AddToAlbumModal.jsx";
 
 const CarouselToolbar = ({ photoIndex, setActiveIndex, lastIndex }) => {
   let { pathname } = useLocation();
   let { setShowCarousel } = useContext(CarouselContext);
   let { currentUser } = useAuth();
-
+  let [showAddToAlbum, setShowAddToAlbum] = useState(false);
   let [showSharing, setShowSharing] = useState(false);
 
   let key = getStateKey(pathname);
@@ -177,7 +178,7 @@ const CarouselToolbar = ({ photoIndex, setActiveIndex, lastIndex }) => {
             }}
           ></i>
         </ToolTip>
-        {pathname !== "/home/bin" && <MoreInfo photo={photo} currentUser={currentUser} />}
+        {pathname !== "/home/bin" && <MoreInfo photo={photo} currentUser={currentUser} setShowAddToAlbum={setShowAddToAlbum}/>}
       </div>
 
       <SharingModal
@@ -186,6 +187,10 @@ const CarouselToolbar = ({ photoIndex, setActiveIndex, lastIndex }) => {
         sharePhotoWith ={handleSharing}
       />
 
+      <AddToAlbumModal
+        show={showAddToAlbum}
+        onHide={()=> setShowAddToAlbum(false)}
+      />
     </div>
   );
 };

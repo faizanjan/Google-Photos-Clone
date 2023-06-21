@@ -10,7 +10,7 @@ import { useDispatch } from "react-redux";
 import Dropdown from "react-bootstrap/Dropdown";
 import DropdownButton from "react-bootstrap/DropdownButton";
 
-function MoreInfo({ photo, currentUser }) {
+function MoreInfo({ photo, currentUser, setShowAddToAlbum }) {
   let docId = photo.id;
 
   const dispatch = useDispatch();
@@ -75,7 +75,7 @@ function MoreInfo({ photo, currentUser }) {
       <Dropdown.Item className="px-4 py-3" disabled>
         Rotate Left
       </Dropdown.Item>
-      <Dropdown.Item className="px-4 py-3" disabled>
+      <Dropdown.Item className="px-4 py-3" onClick={()=>setShowAddToAlbum(true)}>
         Add to Album
       </Dropdown.Item>
       {!photo.isArchived && (
