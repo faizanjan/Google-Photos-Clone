@@ -1,24 +1,12 @@
-import { useEffect, useState } from "react";
-import { useAuth } from "../contexts/AuthContext.jsx";
-import { getAlbums } from "../modules/getAlbums";
-import { setAlbums } from "../Redux/albums.store.js";
-import { useDispatch, useSelector } from "react-redux";
+import { useState } from "react";
+import { useSelector } from "react-redux";
 
 import CreateAlbum from "./albumComponents/CreateAlbum";
 import AlbumCard from "./albumComponents/AlbumCard.jsx";
 
 function Albums() {
   const [showForm, setShowForm] = useState(false);
-  let { currentUser } = useAuth();
-  let dispatch = useDispatch();
   let albums = useSelector((state) => state.albums);
-  
-  useEffect(() => {
-    if (currentUser)
-      getAlbums(currentUser).then((albumsState) => {
-        dispatch(setAlbums(albumsState));
-      });
-  }, [currentUser]);
 
   return (
     <div

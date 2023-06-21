@@ -1,20 +1,27 @@
 import { createContext, useEffect, useState } from "react";
-import { useAuth } from "../contexts/AuthContext.jsx";
 import { useDispatch, useSelector } from "react-redux";
+import { Routes, Route, useLocation } from "react-router-dom";
+
+import { useAuth } from "../contexts/AuthContext.jsx";
+
+// Redux Imports
 import { setPhotos } from "../Redux/photos.store.js";
 import { setFavPhotos } from "../Redux/favPhotos.store.js";
 import { setTrashPhotos } from "../Redux/trashPhotos.store.js";
 import { setArchivePhotos } from "../Redux/archivePhotos.store.js";
-import { Routes, Route, useLocation } from "react-router-dom";
+import { setAlbums } from "../Redux/albums.store.js";
+
+// Module Imports
 import { getPhotoUrls } from "../modules/getPhotos.js";
 import { getAllUsers } from "../modules/getAllUsers";
 import { setAllUsers } from "../Redux/users.store";
-
+import { getAlbums } from "../modules/getAlbums";
 import {
   createPhotosArr,
   filterPhotosByPath,
 } from "../modules/processPhotos.js";
 
+// Component Imports
 import NavBar from "./NavBar";
 import Aside from "./Aside";
 import Photos from "./Photos";
@@ -67,7 +74,11 @@ const Home = () => {
       });
       getAllUsers().then((allUsers) => {
         dispatch(setAllUsers(allUsers));
-    });
+      });
+      getAlbums(currentUser).then((albumsState) => {
+        dispatch(setAlbums(albumsState));
+      });
+
     }
   }, [currentUser, pathname]);
 
@@ -89,7 +100,10 @@ const Home = () => {
             />
             <Route path="albums" element={<Albums />} />
             <Route path="utilities" element={<ComingSoon />} />
-            <Route path="archived" element={<Archive photos={archivedPhotos} />} />
+            <Route
+              path="archived"
+              element={<Archive photos={archivedPhotos} />}
+            />
             <Route path="bin" element={<Bin photos={trashPhotos} />} />
           </Routes>
 
