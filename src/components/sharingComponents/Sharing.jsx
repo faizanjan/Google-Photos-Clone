@@ -1,8 +1,9 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getSharedPhotos } from "../../modules/getSharedPhotos";
 import { useAuth } from "../../contexts/AuthContext.jsx";
 import { setSharedPhotos } from "../../Redux/sharedPhotos.store";
+import SharingHeader from "./SharingHeader";
 
 const Sharing = () => {
   let shared = useSelector((state) => state.shared);
@@ -10,6 +11,9 @@ const Sharing = () => {
 
   const dispatch = useDispatch();
   const { currentUser } = useAuth();
+  const [showSent, setShowSent] = useState(false);
+
+  let photosToDisplay = showSent ? sentPhotos : receivedPhotos;
 
   useEffect(() => {
     getSharedPhotos(currentUser).then((sharedPhotosState) => {
@@ -18,51 +22,35 @@ const Sharing = () => {
   }, []);
 
   return (
-    <div className="d-flex flex-column flex-wrap">
-      <div className="received m-5">
-        <h1>Received</h1>
-        <div className="photo-grid d-flex flex-row flex-wrap">
-          {receivedPhotos &&
-            receivedPhotos.map((photo) => {
-              return (
-                <div
-                  className="photo-container d-flex flex-column position-relative mx-1"
-                  style={{ margin: "20px 0" }}
-                >
-                  <img
-                    src={photo.url}
-                    style={{ height: "250px" }}
-                    alt="google photo"
-                  />
-                  <span className="from text-muted">from: {photo.from}</span>
-                </div>
-              );
-            })}
-        </div>
-      </div>
+    <>
+      <div className="d-flex flex-column flex-wrap" style={{ width: "100%" }}>
+        <SharingHeader showSent={showSent} setShowSent={setShowSent} />
 
-      <div className="sent m-5">
-        <h1>Sent</h1>
-        <div className="photo-grid d-flex flex-row flex-wrap">
-          {sentPhotos &&
-            sentPhotos.map((photo) => {
-              return (
-                <div
-                  className="photo-container d-flex flex-column position-relative mx-1"
-                  style={{ margin: "20px 0" }}
-                >
-                  <img
-                    src={photo.url}
-                    style={{ height: "250px" }}
-                    alt="google photo"
-                  />
-                  <span className="from text-muted">to: {photo.to}</span>
-                </div>
-              );
-            })}
+        <div className="received m-5">
+          <div className="photo-grid d-flex flex-row flex-wrap">
+            {photosToDisplay &&
+              photosToDisplay.map((photo) => {
+                return (
+                  <div
+                    className="photo-container d-flex flex-column position-relative mx-1"
+                    style={{ margin: "20px 0" }}
+                    key={photo.id}
+                  >
+                    <img
+                      src={photo.url}
+                      style={{ height: "250px" }}
+                      alt="google photo"
+                    />
+                    <span className="from text-muted">
+                      {showSent ? "to: " + photo.to : "from: " + photo.from}
+                    </span>
+                  </div>
+                );
+              })}
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

@@ -211,3 +211,27 @@ li.active-aside-tab:hover {
 .landing-page a {
   animation: fade-in-up 1.5s ease-in-out forwards;
 }
+
+
+/* Sharing */
+
+#sharing-menu{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  list-style: none;
+  margin: 20px auto 40px;
+  border-bottom: 1px solid #aab4be;
+  width: 80%;
+  height: 70px;
+}
+
+#sharing-menu li{
+  padding: 0px 35px;
+  font-size: 2rem;
+  color: #aab4be;
+}
+
+#sharing-menu li:hover{
+  cursor: pointer;
+}
