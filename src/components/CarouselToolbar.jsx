@@ -14,14 +14,18 @@ import { useDispatch } from "react-redux";
 import { useLocation } from "react-router-dom";
 import { getStateKey } from "../modules/processPhotos.js";
 import { addPhotoToFav, removePhotoFromFav } from "../Redux/favPhotos.store.js";
+import { sharePhoto } from "../modules/sharePhoto.js";
 
 import ToolTip from "./secondary_components/ToolTip.jsx";
 import MoreInfo from "./secondary_components/MoreInfo.jsx";
+import SharingModal from "./sharingComponents/SharingModal.jsx";
 
 const CarouselToolbar = ({ photoIndex, setActiveIndex, lastIndex }) => {
   let { pathname } = useLocation();
   let { setShowCarousel } = useContext(CarouselContext);
   let { currentUser } = useAuth();
+
+  let [showSharing, setShowSharing] = useState(false);
 
   let key = getStateKey(pathname);
   let photo = useSelector((state) => state[key][photoIndex]);
@@ -34,7 +38,10 @@ const CarouselToolbar = ({ photoIndex, setActiveIndex, lastIndex }) => {
   
   if(!photo) return ;
   
-  
+  const handleSharing = (friendsEmail)=>{
+    sharePhoto(friendsEmail, photo)
+  }
+
   const handleDelete = async (event, path, docId) => {
     event.stopPropagation();
     try {
@@ -111,6 +118,7 @@ const CarouselToolbar = ({ photoIndex, setActiveIndex, lastIndex }) => {
           <i
             style={pathname === "/home/bin" ? { display: "none" } : {}}
             className="mx-3 hover-pointer text-light fa-solid fa-share-nodes"
+            onClick={()=>setShowSharing(true)}
           ></i>
         </ToolTip>
 
@@ -170,6 +178,13 @@ const CarouselToolbar = ({ photoIndex, setActiveIndex, lastIndex }) => {
         </ToolTip>
         {pathname !== "/home/bin" && <MoreInfo photo={photo} currentUser={currentUser} />}
       </div>
+
+      <SharingModal
+        show={showSharing}
+        onHide={() => setShowSharing(false)}
+        sharePhotoWith ={handleSharing}
+      />
+
     </div>
   );
 };
