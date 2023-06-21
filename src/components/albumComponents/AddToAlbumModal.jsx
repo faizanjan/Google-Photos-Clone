@@ -30,7 +30,7 @@ function AddToAlbumModal(props) {
       <Modal.Body>
         <div className="albums-grid d-flex flex-column mt-3 ">
           {Object.values(albums).map((album) => (
-            <AddToAlbumCard album={album}/>
+            <AddToAlbumCard album={album} photo={props.photo}/>
           ))}
         </div>
       </Modal.Body>

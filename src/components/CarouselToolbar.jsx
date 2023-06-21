@@ -190,6 +190,7 @@ const CarouselToolbar = ({ photoIndex, setActiveIndex, lastIndex }) => {
       <AddToAlbumModal
         show={showAddToAlbum}
         onHide={()=> setShowAddToAlbum(false)}
+        photo={photo}
       />
     </div>
   );
