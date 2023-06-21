@@ -27,8 +27,13 @@ const PhotoCheckbox = ({ photo }) => {
   };
 
   return (
-    <div className="photo-checkbox mx-1">
+    <div className="photo-checkbox m-2 shadow"
+      style={photoRef?.current?.checked?{
+        transform: 'scale(0.8)'
+      }: {}}
+    >
       <label
+      className="rounded shadow"
         htmlFor={photo.id}
         style={{
           backgroundImage: `linear-gradient(to bottom, rgba(0, 0, 0, 0.5), transparent), url(${photo.url})`,
@@ -44,7 +49,7 @@ const PhotoCheckbox = ({ photo }) => {
         <img
           src={photo.url}
           alt=""
-          className="img-fluid"
+          className="img-fluid "
           style={{ height: "100%", opacity: 0 }}
         />
       </label>
