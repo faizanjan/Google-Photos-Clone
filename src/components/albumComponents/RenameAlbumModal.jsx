@@ -42,7 +42,7 @@ function RenameAlbumModal(props) {
         <div className="modal-body d-flex flex-row justify-content-between">
           <div
             className="thumbnail mx-4"
-            style={{ width: "120px", height: "120px" }}
+            style={{ width: "120px", height: "120px", overflow:'hidden' }}
           >
             <img src={props.thumbnail} alt="" className="img-fluid" />
           </div>
