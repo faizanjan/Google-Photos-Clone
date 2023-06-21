@@ -13,6 +13,7 @@ import trashPhotosReducer from "./Redux/trashPhotos.store";
 import archivePhotosReducer from "./Redux/archivePhotos.store";
 import profilePhotosReducer from "./Redux/profilePhoto.store";
 import albumsReducer from "./Redux/albums.store";
+import usersReducer from "./Redux/users.store";
 
 import App from "./App.jsx";
 
@@ -22,7 +23,8 @@ let rootReducer = combineReducers({
   favourites : favPhotosReducer,
   bin: trashPhotosReducer,
   archived : archivePhotosReducer,
-  albums: albumsReducer
+  albums: albumsReducer,
+  allUsers: usersReducer
 });
 
 const store = configureStore({

@@ -45,6 +45,7 @@ function SignUp() {
       await setDoc(newUserDoc, {
         name: nameRef.current.value,
         uid: user.uid,
+        email: emailRef.current.value
       });
       const profilePhotosCollection = collection(
         usersCollection,

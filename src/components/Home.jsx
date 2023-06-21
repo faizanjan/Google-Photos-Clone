@@ -22,6 +22,7 @@ import Bin from "./Bin";
 import Backdrop from "./secondary_components/Backdrop.jsx";
 import PhotoCarousel from "./PhotoCarousel.jsx";
 import ComingSoon from "./secondary_components/ComingSoon.jsx";
+import Sharing from "./sharingComponents/Sharing.jsx";
 
 export let CarouselContext = createContext();
 
@@ -75,7 +76,7 @@ const Home = () => {
           <Routes>
             <Route path="photos" element={<Photos photos={photos} />} />
             <Route path="explore" element={<ComingSoon />} />
-            <Route path="sharing" element={<ComingSoon />} />
+            <Route path="sharing" element={<Sharing />} />
             <Route
               path="favourites"
               element={<Favourites photos={favPhotos} />}
