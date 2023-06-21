@@ -1,14 +1,62 @@
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { db } from "../../firebase/firebase.config.js";
+import { deleteDoc, doc } from "firebase/firestore";
+import { useAuth } from "../../contexts/AuthContext.jsx";
+import { deleteSharedPhoto } from "../../Redux/sharedPhotos.store.js";
+
 import ToolTip from "./../secondary_components/ToolTip.jsx";
 
-const CarouselToolbar = ({ photoId, setShowCarousel, showSent }) => {
+const CarouselToolbar = ({
+  photoId,
+  setShowCarousel,
+  showSent,
+  activeIndex,
+  setActiveIndex,
+  lastIndex,
+}) => {
   let photo = useSelector((state) => {
     return showSent
       ? state.shared.sentPhotos.find((photo) => photo.id === photoId)
       : state.shared.receivedPhotos.find((photo) => photo.id === photoId);
   });
 
+  let { currentUser } = useAuth();
+  let dispatch = useDispatch();
+
   if (!photo) return;
+
+  const handleDownload = () => {
+    fetch(photo.url)
+      .then((response) => response.blob())
+      .then((blob) => {
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = "";
+        link.click();
+        URL.revokeObjectURL(url);
+      })
+      .catch((error) => {
+        console.error("Error downloading the photo:", error);
+      });
+  };
+
+  const handleDelete = async (docId) => {
+    try {
+      let albumPhotoDoc = doc(
+        db,
+        `Users/${currentUser.uid}/Shared Photos/${currentUser.uid}/` +
+          (showSent ? "Sent" : "Received"),
+        docId
+      );
+      await deleteDoc(albumPhotoDoc);
+      if (activeIndex === lastIndex) setActiveIndex(0);
+
+      dispatch(deleteSharedPhoto({ wasPhotoSent: showSent, photoId: docId }));
+    } catch (error) {
+      console.error("Couldn't delete the referenced item:", error.message);
+    }
+  };
 
   return (
     <div
@@ -24,10 +72,10 @@ const CarouselToolbar = ({ photoId, setShowCarousel, showSent }) => {
 
       <h4
         className="text-light fw-light text-center"
-        style={{ 
-            position: "absolute",
-            left:'50%',
-            transform: "translateX(-50%)"
+        style={{
+          position: "absolute",
+          left: "50%",
+          transform: "translateX(-50%)",
         }}
       >
         {showSent ? "To: " + photo.to : "From: " + photo.from}
@@ -48,16 +96,14 @@ const CarouselToolbar = ({ photoId, setShowCarousel, showSent }) => {
           <i
             className="mx-3 hover-pointer text-light fa-solid fa-trash-can fs-5"
             onClick={(e) => {
-              console.log("deleting...");
+              handleDelete(photo.id);
             }}
           ></i>
         </ToolTip>
         <ToolTip tooltip="Download">
           <i
             className="mx-3 hover-pointer text-light fa-solid fa-download fs-5"
-            onClick={(e) => {
-              console.log("downloading...");
-            }}
+            onClick={handleDownload}
           ></i>
         </ToolTip>
       </div>

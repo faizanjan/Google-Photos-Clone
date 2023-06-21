@@ -7,14 +7,12 @@ let sharedPhotoSlice = createSlice({
     setSharedPhotos: (_, action) => {
       return action.payload;
     },
-    // addSharedPhoto: (state, action) => {
-    //   return [action.payload, ...state]
-    // },
-    // deleteSharedPhoto: (state, action) => {
-    //   const updatedPhotos = state.filter(photo=>photo.id !== action.payload)
-    //   return updatedPhotos;
-    // },
+    deleteSharedPhoto: (state, action) => {
+      let receivedOrSent= action.payload.wasPhotoSent? "sentPhotos":"receivedPhotos";
+      const updatedPhotos = state[receivedOrSent].filter(photo=>photo.id !== action.payload.photoId)
+      state[receivedOrSent] = updatedPhotos;
+    },
   },
 });
-export const { setSharedPhotos, addSharedPhoto, deleteSharedPhoto } = sharedPhotoSlice.actions;
+export const { setSharedPhotos, deleteSharedPhoto } = sharedPhotoSlice.actions;
 export default sharedPhotoSlice.reducer;

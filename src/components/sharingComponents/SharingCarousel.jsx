@@ -52,6 +52,9 @@ function SharingCarousel({
         photoId={photos[activeIndex]?.id}
         setShowCarousel={setShowCarousel}
         showSent={ showSent}
+        activeIndex={activeIndex}
+        setActiveIndex={setActiveIndex}
+        lastIndex={photos.length - 1}
       />
 
       <Carousel
