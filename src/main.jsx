@@ -14,6 +14,7 @@ import archivePhotosReducer from "./Redux/archivePhotos.store";
 import profilePhotosReducer from "./Redux/profilePhoto.store";
 import albumsReducer from "./Redux/albums.store";
 import usersReducer from "./Redux/users.store";
+import sharingReducer from "./Redux/sharedPhotos.store";
 
 import App from "./App.jsx";
 
@@ -24,7 +25,8 @@ let rootReducer = combineReducers({
   bin: trashPhotosReducer,
   archived : archivePhotosReducer,
   albums: albumsReducer,
-  allUsers: usersReducer
+  allUsers: usersReducer,
+  shared: sharingReducer
 });
 
 const store = configureStore({
