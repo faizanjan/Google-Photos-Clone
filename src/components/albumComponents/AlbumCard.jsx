@@ -63,7 +63,7 @@ const AlbumCard = ({ albumId }) => {
               <Dropdown.Item className="px-4 py-3" onClick={handleDeleteAlbum}>
                 Delete Album
               </Dropdown.Item>
-              <Dropdown.Item className="px-4 py-3">Share Album</Dropdown.Item>
+              <Dropdown.Item className="px-4 py-3 disabled">Share Album</Dropdown.Item>
             </DropdownButton>
           </div>
         </div>

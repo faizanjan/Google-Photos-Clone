@@ -45,10 +45,12 @@ const CarouselToolbar = ({ photoIndex, setActiveIndex, lastIndex }) => {
   const handleSharing = (receipientId, receipientEmail) => {
     if (!receipientId) {
       setSnackbar({ severity: "error", message: "User does not exist" });
-      setShowSnackbar(true);
-      return;
     }
-    sharePhotos(receipientId, receipientEmail, currentUser, [photo]);
+    else{
+      setSnackbar({ severity: "success", message: "Photo Sent" });
+      sharePhotos(receipientId, receipientEmail, currentUser, [photo]);
+    }
+    setShowSnackbar(true);
   };
 
   const handleDelete = async (event, path, docId) => {
