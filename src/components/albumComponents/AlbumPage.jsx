@@ -38,7 +38,7 @@ const AlbumPage = ({
   let dispatch = useDispatch();
 
   const handleChangeName = async () => {
-    if (album.albumName === albumName) return;
+    if (album.albumName === albumName || isAlbumShared) return;
     let docId = album.albumId;
     const albumDocRef = doc(db, `Users/${currentUser.uid}/Albums`, docId);
     try {

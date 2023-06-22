@@ -115,7 +115,7 @@ const AlbumCard = (props) => {
               <Dropdown.Item
                 className="px-4 py-3"
                 onClick={() => setModalShow(true)}
-                disabled={props.isAlbumReceived}
+                disabled={props.isAlbumShared}
               >
                 Rename Album
               </Dropdown.Item>
