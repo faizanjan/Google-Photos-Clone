@@ -212,26 +212,25 @@ li.active-aside-tab:hover {
   animation: fade-in-up 1.5s ease-in-out forwards;
 }
 
-
 /* Sharing */
 
-#sharing-menu{
+#sharing-menu {
   display: flex;
   flex-direction: row;
-  justify-content: space-around;
+  justify-content: flex-start;
   list-style: none;
-  margin: 20px auto 40px;
+  margin: 20px 0 40px;
   border-bottom: 1px solid #aab4be;
-  width: 80%;
-  height: 70px;
+  width: auto;
+  height: 40px;
 }
 
-#sharing-menu li{
+#sharing-menu li {
   padding: 0px 35px;
-  font-size: 2rem;
+  font-size: 1rem;
   color: #aab4be;
 }
 
-#sharing-menu li:hover{
+#sharing-menu li:hover {
   cursor: pointer;
 }
