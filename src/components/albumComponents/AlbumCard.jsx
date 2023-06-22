@@ -4,15 +4,21 @@ import { deleteDoc, doc } from "firebase/firestore";
 import { useAuth } from "../../contexts/AuthContext.jsx";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteAlbum } from "../../Redux/albums.store.js";
+import { shareAlbum } from "../../modules/shareAlbums.js";
 
 import Dropdown from "react-bootstrap/Dropdown";
 import DropdownButton from "react-bootstrap/DropdownButton";
 import AlbumPage from "./AlbumPage";
 import RenameAlbumModal from "./RenameAlbumModal.jsx";
+import SharingModal from "../sharingComponents/SharingModal.jsx";
+import CustomizedSnackbars from "../secondary_components/Snackbar.jsx";
 
 const AlbumCard = ({ albumId }) => {
   const [showAlbumPage, setShowAlbumPage] = useState(false);
   const [modalShow, setModalShow] = useState(false);
+  const [showSharing, setShowSharing] = useState(false);
+  const [snackbar, setSnackbar] = useState({});
+  const [showSnackbar, setShowSnackbar] = useState(false);
 
   const album = useSelector((state) => state.albums[albumId]);
   let { currentUser } = useAuth();
@@ -27,6 +33,18 @@ const AlbumCard = ({ albumId }) => {
     } catch (error) {
       console.error("Couldn't delete the referenced item:", error.message);
     }
+  };
+
+  const handleSharing = (receipientId, receipientEmail) => {
+    if (!receipientId) {
+      setSnackbar({ severity: "error", message: "User does not exist" });
+      return;
+    }
+    else{
+      setSnackbar({ severity: "success", message: `Album sent to ${receipientEmail}` });
+      shareAlbum(receipientId, receipientEmail, currentUser, album);
+    }
+    setShowSnackbar(true);
   };
 
   return (
@@ -63,7 +81,12 @@ const AlbumCard = ({ albumId }) => {
               <Dropdown.Item className="px-4 py-3" onClick={handleDeleteAlbum}>
                 Delete Album
               </Dropdown.Item>
-              <Dropdown.Item className="px-4 py-3 disabled">Share Album</Dropdown.Item>
+              <Dropdown.Item
+                className="px-4 py-3"
+                onClick={() => setShowSharing(true)}
+              >
+                Share Album
+              </Dropdown.Item>
             </DropdownButton>
           </div>
         </div>
@@ -90,6 +113,19 @@ const AlbumCard = ({ albumId }) => {
         thumbnail={album?.photos?.[0]?.url}
         albumName={album?.albumName}
         albumId={album?.albumId}
+      />
+
+      <SharingModal
+        show={showSharing}
+        onHide={() => setShowSharing(false)}
+        sharePhotoWith={handleSharing}
+      />
+
+      <CustomizedSnackbars
+        severity={snackbar.severity}
+        message={snackbar.message}
+        open={showSnackbar}
+        setOpen={setShowSnackbar}
       />
     </>
   );
