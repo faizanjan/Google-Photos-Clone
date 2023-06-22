@@ -10,6 +10,7 @@ import AlbumPhoto from "./AlbumPhoto";
 import AlbumCarousel from "./AlbumCarousel.jsx";
 import ToolTip from "../secondary_components/ToolTip.jsx";
 import SelectPhotos from "./SelectAlbumPhotos.jsx";
+import CustomizedSnackbars from "../secondary_components/Snackbar.jsx";
 
 export let AddPhotosToAlbum = createContext();
 
@@ -20,6 +21,9 @@ const AlbumPage = ({ albumId, setShowAlbumPage, handleDeleteAlbum }) => {
   let [newPhotos, setNewPhotos] = useState([]);
   let [showCarousel, setShowCarousel] = useState(false);
   let [activeIndex, setActiveIndex] = useState(0);
+  let [snackbar, setSnackbar] = useState({});
+  let [showSnackbar, setShowSnackbar] = useState(false);
+
   let { currentUser } = useAuth();
   let dispatch = useDispatch();
 
@@ -39,8 +43,11 @@ const AlbumPage = ({ albumId, setShowAlbumPage, handleDeleteAlbum }) => {
   };
 
   const handleAddPhoto = async () => {
-    let newPhotosArr = await addNewPhotos(currentUser, albumId, newPhotos)
-    dispatch(addPhotosToAlbum({newPhotosArr, albumId}));
+    let res = await addNewPhotos(currentUser, albumId, newPhotos);
+
+    setSnackbar({ severity: res.severity, message: res.message });
+    setShowSnackbar(true);
+    dispatch(addPhotosToAlbum({ newPhotosArr: res.newPhotos, albumId }));
   };
 
   let photos = album.photos.map((photo, index) => ({ ...photo, index }));
@@ -72,7 +79,7 @@ const AlbumPage = ({ albumId, setShowAlbumPage, handleDeleteAlbum }) => {
               <ToolTip tooltip="Add photo">
                 <i
                   className="fa-regular fa-square-plus text-secondary fs-5 mx-4 hover-pointer"
-                  onClick={()=>setShowPhotoSelection(true)}
+                  onClick={() => setShowPhotoSelection(true)}
                 ></i>
               </ToolTip>
 
@@ -131,6 +138,13 @@ const AlbumPage = ({ albumId, setShowAlbumPage, handleDeleteAlbum }) => {
           )}
         </AddPhotosToAlbum.Provider>
       </div>
+
+      <CustomizedSnackbars
+        severity={snackbar.severity}
+        message={snackbar.message}
+        open={showSnackbar}
+        setOpen={setShowSnackbar}
+      />
     </>
   );
 };
