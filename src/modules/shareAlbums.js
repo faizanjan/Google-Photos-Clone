@@ -2,7 +2,7 @@ import { db } from "../firebase/firebase.config.js";
 import { addDoc, collection } from "firebase/firestore";
 
 export const shareAlbum = async (recipientId, recipientEmail, sender, album) => {
-  console.log(album)
+
   const usersCollection = collection(db, "Users");
 
   const recipientSharedAlbumsCollection = collection(
