@@ -79,6 +79,7 @@ const AlbumCard = (props) => {
               <Dropdown.Item
                 className="px-4 py-3"
                 onClick={() => setModalShow(true)}
+                disabled={props.isAlbumReceived}
               >
                 Rename Album
               </Dropdown.Item>
@@ -88,6 +89,7 @@ const AlbumCard = (props) => {
               <Dropdown.Item
                 className="px-4 py-3"
                 onClick={() => setShowSharing(true)}
+                disabled={props.isAlbumReceived}
               >
                 Share Album
               </Dropdown.Item>

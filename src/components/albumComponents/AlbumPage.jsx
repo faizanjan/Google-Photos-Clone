@@ -14,8 +14,13 @@ import CustomizedSnackbars from "../secondary_components/Snackbar.jsx";
 
 export let AddPhotosToAlbum = createContext();
 
-const AlbumPage = ({ propAlbum, setShowAlbumPage, handleDeleteAlbum, isAlbumReceived }) => {
-  // let album = useSelector((state) => state.albums[albumId]);
+const AlbumPage = ({
+  propAlbum,
+  setShowAlbumPage,
+  handleDeleteAlbum,
+  isAlbumReceived,
+}) => {
+
   const album = isAlbumReceived
     ? propAlbum
     : useSelector((state) => state.albums[propAlbum?.albumId]);
@@ -80,12 +85,14 @@ const AlbumPage = ({ propAlbum, setShowAlbumPage, handleDeleteAlbum, isAlbumRece
             ></i>
 
             <div className="tools me-5">
-              <ToolTip tooltip="Add photo">
-                <i
-                  className="fa-regular fa-square-plus text-secondary fs-5 mx-4 hover-pointer"
-                  onClick={() => setShowPhotoSelection(true)}
-                ></i>
-              </ToolTip>
+              {!isAlbumReceived && (
+                <ToolTip tooltip="Add photo">
+                  <i
+                    className="fa-regular fa-square-plus text-secondary fs-5 mx-4 hover-pointer"
+                    onClick={() => setShowPhotoSelection(true)}
+                  ></i>
+                </ToolTip>
+              )}
 
               <ToolTip tooltip="Delete Album">
                 <i
