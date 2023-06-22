@@ -14,8 +14,12 @@ import CustomizedSnackbars from "../secondary_components/Snackbar.jsx";
 
 export let AddPhotosToAlbum = createContext();
 
-const AlbumPage = ({ albumId, setShowAlbumPage, handleDeleteAlbum }) => {
-  let album = useSelector((state) => state.albums[albumId]);
+const AlbumPage = ({ propAlbum, setShowAlbumPage, handleDeleteAlbum, isAlbumReceived }) => {
+  // let album = useSelector((state) => state.albums[albumId]);
+  const album = isAlbumReceived
+    ? propAlbum
+    : useSelector((state) => state.albums[propAlbum?.albumId]);
+
   let [albumName, setAlbumName] = useState(album.albumName);
   let [showPhotoSelection, setShowPhotoSelection] = useState(false);
   let [newPhotos, setNewPhotos] = useState([]);
@@ -124,7 +128,7 @@ const AlbumPage = ({ albumId, setShowAlbumPage, handleDeleteAlbum }) => {
             setShowCarousel={setShowCarousel}
             activeIndex={activeIndex}
             setActiveIndex={setActiveIndex}
-            albumId={albumId}
+            albumId={album.albumId}
           />
         )}
 

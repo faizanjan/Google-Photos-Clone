@@ -16,8 +16,8 @@ const CarouselToolbar = ({
 }) => {
   let photo = useSelector((state) => {
     return showSent
-      ? state.shared.sentPhotos.find((photo) => photo.id === photoId)
-      : state.shared.receivedPhotos.find((photo) => photo.id === photoId);
+      ? state.sharedPhotos.sentPhotos.find((photo) => photo.id === photoId)
+      : state.sharedPhotos.receivedPhotos.find((photo) => photo.id === photoId);
   });
 
   let { currentUser } = useAuth();

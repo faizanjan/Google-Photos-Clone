@@ -13,14 +13,16 @@ import RenameAlbumModal from "./RenameAlbumModal.jsx";
 import SharingModal from "../sharingComponents/SharingModal.jsx";
 import CustomizedSnackbars from "../secondary_components/Snackbar.jsx";
 
-const AlbumCard = ({ albumId }) => {
+const AlbumCard = (props) => {
   const [showAlbumPage, setShowAlbumPage] = useState(false);
   const [modalShow, setModalShow] = useState(false);
   const [showSharing, setShowSharing] = useState(false);
   const [snackbar, setSnackbar] = useState({});
   const [showSnackbar, setShowSnackbar] = useState(false);
 
-  const album = useSelector((state) => state.albums[albumId]);
+  const album = props.isAlbumReceived
+    ? props.album
+    : useSelector((state) => state.albums[props.album?.albumId]);
   let { currentUser } = useAuth();
   let dispatch = useDispatch();
 
@@ -39,9 +41,11 @@ const AlbumCard = ({ albumId }) => {
     if (!receipientId) {
       setSnackbar({ severity: "error", message: "User does not exist" });
       return;
-    }
-    else{
-      setSnackbar({ severity: "success", message: `Album sent to ${receipientEmail}` });
+    } else {
+      setSnackbar({
+        severity: "success",
+        message: `Album sent to ${receipientEmail}`,
+      });
       shareAlbum(receipientId, receipientEmail, currentUser, album);
     }
     setShowSnackbar(true);
@@ -101,9 +105,10 @@ const AlbumCard = ({ albumId }) => {
 
       {showAlbumPage && (
         <AlbumPage
-          albumId={album.albumId}
+          propAlbum={album}
           setShowAlbumPage={setShowAlbumPage}
           handleDeleteAlbum={handleDeleteAlbum}
+          isAlbumReceived={props.isAlbumReceived}
         />
       )}
 
