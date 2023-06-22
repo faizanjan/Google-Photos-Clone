@@ -4,7 +4,7 @@ import { getSharedPhotos } from "../../modules/getSharedPhotos";
 import { useAuth } from "../../contexts/AuthContext.jsx";
 import { setSharedPhotos } from "../../Redux/sharedPhotos.store";
 import { setSharedAlbums } from "../../Redux/sharedAlbums.store";
-import { getSharedAlbums } from "../../Redux/getSharedAlbums";
+import { getSharedAlbums } from "../../modules/getSharedAlbums";
 
 import SharingHeader from "./SharingHeader";
 import SharedPhoto from "./SharedPhoto";
@@ -55,6 +55,7 @@ const Sharing = () => {
                       key={album.albumId}
                       album={album}
                       isAlbumReceived={!showSent}
+                      isAlbumShared={true}
                     />
                     <span className="ms-4 text-muted">
                       {showSent ? "To: " + album.to : "From: " + album.from}

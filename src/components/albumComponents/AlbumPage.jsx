@@ -19,6 +19,7 @@ const AlbumPage = ({
   setShowAlbumPage,
   handleDeleteAlbum,
   isAlbumReceived,
+  isAlbumShared
 }) => {
 
   const album = isAlbumReceived
@@ -85,7 +86,7 @@ const AlbumPage = ({
             ></i>
 
             <div className="tools me-5">
-              {!isAlbumReceived && (
+              {!isAlbumShared && (
                 <ToolTip tooltip="Add photo">
                   <i
                     className="fa-regular fa-square-plus text-secondary fs-5 mx-4 hover-pointer"

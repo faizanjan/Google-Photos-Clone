@@ -5,6 +5,7 @@ import { useAuth } from "../../contexts/AuthContext.jsx";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteAlbum } from "../../Redux/albums.store.js";
 import { shareAlbum } from "../../modules/shareAlbums.js";
+import { deleteSharedAlbum } from "../../Redux/sharedAlbums.store.js";
 
 import Dropdown from "react-bootstrap/Dropdown";
 import DropdownButton from "react-bootstrap/DropdownButton";
@@ -20,20 +21,55 @@ const AlbumCard = (props) => {
   const [snackbar, setSnackbar] = useState({});
   const [showSnackbar, setShowSnackbar] = useState(false);
 
-  const album = props.isAlbumReceived
-    ? props.album
+  const album = props.isAlbumShared
+    ? props.isAlbumReceived
+      ? useSelector((state) =>
+          state.sharedAlbums.receivedAlbums.find(
+            (album) => album.albumId === props.album.albumId
+          )
+        )
+      : useSelector((state) =>
+          state.sharedAlbums.sentAlbums.find(
+            (album) => album.albumId === props.album.albumId
+          )
+        )
     : useSelector((state) => state.albums[props.album?.albumId]);
+
   let { currentUser } = useAuth();
   let dispatch = useDispatch();
 
   const handleDeleteAlbum = async () => {
-    let docId = album.albumId;
-    try {
-      let albumDoc = doc(db, `Users/${currentUser.uid}/Albums`, docId);
-      await deleteDoc(albumDoc);
-      dispatch(deleteAlbum(docId));
-    } catch (error) {
-      console.error("Couldn't delete the referenced item:", error.message);
+    let docId = album.id;
+    switch (props.isAlbumShared) {
+      case false:
+        try {
+          let albumDoc = doc(db, `Users/${currentUser.uid}/Albums`, docId);
+          await deleteDoc(albumDoc);
+          dispatch(deleteAlbum(docId));
+        } catch (error) {
+          console.error("Couldn't delete the referenced item:", error.message);
+        }
+
+      case true:
+        try {
+          console.log(docId);
+          let albumDoc = doc(
+            db,
+            `Users/${currentUser.uid}/Shared Albums/${currentUser.uid}/` +
+              (props.isAlbumReceived ? "Received" : "Sent"),
+            docId
+          );
+          await deleteDoc(albumDoc);
+
+          dispatch(
+            deleteSharedAlbum({
+              wasAlbumSent: !props.isAlbumReceived,
+              albumId: album.albumId,
+            })
+          );
+        } catch (error) {
+          console.error("Couldn't delete the referenced item:", error.message);
+        }
     }
   };
 
@@ -111,6 +147,7 @@ const AlbumCard = (props) => {
           setShowAlbumPage={setShowAlbumPage}
           handleDeleteAlbum={handleDeleteAlbum}
           isAlbumReceived={props.isAlbumReceived}
+          isAlbumShared={props.isAlbumShared}
         />
       )}
 
