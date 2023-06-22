@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
-const Aside = ({pathname}) => {
+const Aside = ({ pathname }) => {
   let [activeTab, setActiveTab] = useState(pathname);
 
   return (
@@ -13,8 +13,10 @@ const Aside = ({pathname}) => {
             onClick={() => setActiveTab("/home/photos")}
           >
             <Link to="/home/photos">
-              <i className="fa-solid fa-image me-4"></i>
-              <span>Photos</span>
+              <div className="d-flex flex-row align-items-center">
+                <span className="material-symbols-outlined">photo_library</span>
+                <span>Photos</span>
+              </div>
             </Link>
           </li>
           <li
@@ -22,8 +24,10 @@ const Aside = ({pathname}) => {
             onClick={() => setActiveTab("/home/explore")}
           >
             <Link to="/home/explore">
-              <i className="fa-solid fa-magnifying-glass me-4"></i>
-              <span>Explore</span>
+              <div className="d-flex flex-row align-items-center">
+                <span className="material-symbols-outlined">search</span>
+                <span>Explore</span>
+              </div>
             </Link>
           </li>
           <li
@@ -31,8 +35,10 @@ const Aside = ({pathname}) => {
             onClick={() => setActiveTab("/home/sharing")}
           >
             <Link to="/home/sharing">
-              <i className="fa-solid fa-user-group me-4"></i>
-              <span>Sharing</span>
+              <div className="d-flex flex-row align-items-center">
+                <span className="material-symbols-outlined">group</span>
+                <span>Sharing</span>
+              </div>
             </Link>
           </li>
         </ul>
@@ -44,12 +50,16 @@ const Aside = ({pathname}) => {
         </span>
         <ul className="py-3 ps-0 mb-0">
           <li
-            className={activeTab === "/home/favourites" ? "active-aside-tab" : ""}
+            className={
+              activeTab === "/home/favourites" ? "active-aside-tab" : ""
+            }
             onClick={() => setActiveTab("/home/favourites")}
           >
             <Link to="/home/favourites">
-              <i className="fa-regular fa-star me-4"></i>
-              <span>Favourites</span>
+              <div className="d-flex flex-row align-items-center">
+                <span className="material-symbols-outlined">star</span>
+                <span>Favourites</span>
+              </div>
             </Link>
           </li>
           <li
@@ -57,17 +67,25 @@ const Aside = ({pathname}) => {
             onClick={() => setActiveTab("/home/albums")}
           >
             <Link to="/home/albums">
-              <i className="fa-solid fa-book-bookmark me-4"></i>
-              <span>Albums</span>
+              <div className="d-flex flex-row align-items-center">
+                <span className="material-symbols-outlined">photo_album</span>
+                <span>Albums</span>
+              </div>
             </Link>
           </li>
           <li
-            className={activeTab === "/home/utilities" ? "active-aside-tab" : ""}
+            className={
+              activeTab === "/home/utilities" ? "active-aside-tab" : ""
+            }
             onClick={() => setActiveTab("/home/utilities")}
           >
             <Link to="/home/utilities">
-              <i className="fa-solid fa-check-to-slot me-4"></i>
-              <span>Utilities</span>
+              <div className="d-flex flex-row align-items-center">
+                <span className="material-symbols-outlined">
+                  library_add_check
+                </span>
+                <span>Utilities</span>
+              </div>
             </Link>
           </li>
           <li
@@ -75,8 +93,10 @@ const Aside = ({pathname}) => {
             onClick={() => setActiveTab("/home/archive")}
           >
             <Link to="/home/archived">
-              <i className="fa-solid fa-file-arrow-down me-4"></i>
-              <span>Archive</span>
+              <div className="d-flex flex-row align-items-center">
+                <span className="material-symbols-outlined">archive</span>
+                <span>Archive</span>
+              </div>
             </Link>
           </li>
           <li
@@ -84,8 +104,10 @@ const Aside = ({pathname}) => {
             onClick={() => setActiveTab("/home/bin")}
           >
             <Link to="/home/bin">
-              <i className="fa-solid fa-trash-can me-4"></i>
-              <span>Bin</span>
+              <div className="d-flex flex-row align-items-center">
+                <span className="material-symbols-outlined">delete</span>
+                <span>Bin</span>
+              </div>
             </Link>
           </li>
         </ul>
@@ -97,8 +119,10 @@ const Aside = ({pathname}) => {
           onClick={() => setActiveTab(8)}
         >
           <Link to="/home/storage">
-            <i className="fa-solid fa-cloud me-4"></i>
-            <span>Storage</span>
+            <div className="d-flex flex-row align-items-center">
+              <span className="material-symbols-outlined">cloud</span>
+              <span>Storage</span>
+            </div>
           </Link>
         </li>
       </div>

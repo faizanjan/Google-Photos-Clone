@@ -95,7 +95,7 @@ li.active-aside-tab:hover {
 }
 .aside a span {
   color: #3c4043;
-  font-weight: 500;
+  font-weight: 420;
 }
 
 .active-aside-tab {
@@ -106,6 +106,10 @@ li.active-aside-tab:hover {
   color: rgb(26, 115, 232) !important;
 }
 
+.material-symbols-outlined {
+  display: inline;
+  width: 54px !important;
+}
 /* photos */
 
 .photos-container {
