@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { useSelector } from "react-redux";
 
-import CreateAlbum from "./albumComponents/CreateAlbum";
-import AlbumCard from "./albumComponents/AlbumCard.jsx";
+import CreateAlbum from "./CreateAlbum";
+import AlbumCard from "./AlbumCard.jsx";
 
 function Albums() {
   const [showForm, setShowForm] = useState(false);

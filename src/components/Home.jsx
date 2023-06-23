@@ -25,7 +25,7 @@ import {
 import NavBar from "./NavBar";
 import Aside from "./Aside";
 import Photos from "./Photos";
-import Albums from "./Albums";
+import Albums from "./albumComponents/Albums";
 import Favourites from "./Favourites";
 import Archive from "./Archive";
 import Bin from "./Bin";
