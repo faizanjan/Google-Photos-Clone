@@ -1,8 +1,8 @@
 import { Route, Routes } from "react-router-dom";
 import AuthProvider from "./contexts/AuthContext.jsx";
 import Home from "./components/Home.jsx";
-import SignUp from "./components/authentication_components/SignUp";
-import SignIn from "./components/authentication_components/SignIn";
+import SignUp from "./components/authenticationComponents/SignUp.jsx";
+import SignIn from "./components/authenticationComponents/SignIn.jsx";
 import LandingPage from "./components/LandingPage";
 
 const App = () => {
